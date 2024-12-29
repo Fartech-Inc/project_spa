@@ -13,6 +13,6 @@
             <x-fluentui-book-add-20-o />
             <p>My Booking</p>
         </button>
-        <button class="border border-[#10062B] rounded-full py-3 px-4">Masuk</button>
+        <a class="border border-[#10062B] rounded-full py-3 px-4" href="/login">Masuk</a>
     </div>
 </div>
