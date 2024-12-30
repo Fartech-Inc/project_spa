@@ -32,27 +32,35 @@
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Sign in to Pijat</p>
+            <p class="font-bold text-4xl text-[#10062B] ml-20 my-28 text-center">Daftarkan Akun Anda</p>
             <form action="" class="mx-20">
                 <div>
-                    <p class="text-[#10062B]">Email Address</p>
-                    <input type="text" placeholder="Write your email" class="w-full px-5 py-3 rounded-full shadow-xl">
+                   
+                    <input type="text" placeholder="Tuliskan nama lengkap anda" class="w-full px-10 py-3 rounded-full shadow-xl">
                 </div>
-                <div class="relative mt-5">
-                    <p class="text-[#10062B]">Password</p>
+                <div>
+                   
+                    <input type="date" placeholder="Pilih tanggal lahir" class="w-full px-10 py-3 rounded-full shadow-xl my-3">
+                </div>
+                <div>
+                   
+                    <input type="text" placeholder="Masukkan nomor telepon" class="w-full px-10 py-3 rounded-full shadow-xl">
+                </div>
+                <div>
+                   
+                    <input type="text" placeholder="Tuliskan alamat email anda" class="w-full px-10 py-3 rounded-full shadow-xl my-3">
+                </div>
+                <div class="relative">
                     <div class="relative">
-                        <input id="passwordInput" type="password" placeholder="Input your password" class="w-full px-5 py-3 rounded-full shadow-xl"  >
+                        <input id="passwordInput" type="password" placeholder="Buat kata sandi anda" class="w-full px-10 py-3 rounded-full shadow-xl"  >
                         <span class="absolute top-3 right-5 cursor-pointer">
                             <x-iconsax-bro-eye-slash id="eyeSlashIcon" class="w-5 text-[#5E677E]" onclick="togglePasswordVisibility()" style="display: block;"></x-iconsax-bro-eye-slash>
                             <x-iconsax-bro-eye id="eyeIcon" class="w-5 text-[#5E677E]" onclick="togglePasswordVisibility()" style="display: none;"></x-iconsax-bro-eye>
                         </span>
                     </div>
                 </div>
-                <div class="text-right my-5">
-                    <a href="/" class="text-[#5E677E]">Forgot my password</a>
-                </div>
-                <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl">Sign In</button>
-                <a href="/register" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a>
+                <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold shadow-xl mt-10">Buat Akun Baru</button>
+                <a href="/login" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold block shadow-xl mt-3">Masuk</a>
             </form>
         </div>
         {{-- Right Section --}}
