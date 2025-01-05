@@ -9,10 +9,10 @@
         <a href="">Testimonials</a>
     </div>
     <div class="flex items-center gap-3">
-        <button class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4">
+        <a class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4" href="/mybooking">
             <x-fluentui-book-add-20-o />
             <p>My Booking</p>
-        </button>
+        </a>
         <a class="border border-[#10062B] rounded-full py-3 px-4" href="/login">Masuk</a>
     </div>
 </div>
