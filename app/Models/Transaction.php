@@ -16,7 +16,7 @@ class Transaction extends Model
         "status",
         "total_price",
         "payment_type",
-        "transation_date",
+        "transaction_date",
         "start_time",
         "end_time",
     ];
@@ -31,7 +31,7 @@ class Transaction extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function detail_transations()
+    public function detail_transactions()
     {
         return $this->hasMany(DetailTransaction::class);
     }

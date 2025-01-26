@@ -1,18 +1,31 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\DetailsController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MybookingController;
 
-Route::get('/', [HomeController::class, 'index']);
-Route::get('/login', [LoginController::class, 'index']);
-Route::get('/register', [RegisterController::class, 'index']);
+// Web
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\Web\AuthController;
+
+
+// AUTH
+Route::get('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/login', [AuthController::class, 'login_process'])->name('auth.login.process');
+Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/register', [AuthController::class, 'register_process'])->name('auth.register.process');
+Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
+
+// PROFILE
+Route::prefix('profile')->middleware('auth:web')->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('user.profile');
+    Route::post('/', [ProfileController::class, 'update'])->name('user.profile.update');
+});
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jasa', [JasaController::class, 'index']);
 Route::get('/details', [DetailsController::class, 'index']);
-Route::get('/profile', [ProfileController::class, 'index']);
 Route::get('/mybooking', [MybookingController::class, 'index']);
