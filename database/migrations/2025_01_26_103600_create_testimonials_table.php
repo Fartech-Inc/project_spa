@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('service_id')->index();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->foreignId('transaction_id')->index();
-            $table->foreign('transaction_id')->references('id')->on('transations')->onDelete('cascade');
+            $table->foreign('transaction_id')->references('id')->on('transactions')->onDelete('cascade');
             $table->tinyInteger('rating')->unsigned()->checkBetween(1, 5)->index();
             $table->text('message');
             $table->timestamps();

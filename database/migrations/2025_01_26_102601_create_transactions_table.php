@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transations', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('code', 10)->unique()->index();
             $table->foreignId('user_id')->index();
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('status', ['pending','success','cancel'])->default('pending')->index();
             $table->integer('total_price')->index();
             $table->enum('payment_type', ['full_payment','down_payment'])->index();
-            $table->timestamp('transation_date')->index();
+            $table->timestamp('transaction_date')->index();
             $table->time('start_time')->index();
             $table->time('end_time')->index();
             $table->timestamps();
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transations');
+        Schema::dropIfExists('transactions');
     }
 };
