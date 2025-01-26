@@ -3,21 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Booking extends Model
+class ServiceGallery extends Model
 {
-    protected $fillable = [
-        'customer_id',
-        'service_id',
-        'booking_time',
-        'booking_code',
-        'status',
-    ];
+    use SoftDeletes;
 
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
+    protected $fillable = [
+        'service_id',
+        'image'
+    ];
 
     public function service()
     {

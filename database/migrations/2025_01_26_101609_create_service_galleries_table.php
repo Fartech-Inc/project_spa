@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('service_galleries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email');
-            $table->date('birth_date');
-            $table->string('phone');
-            $table->string('password');
+            $table->foreignId('service_id')->index();
+            $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
+            $table->string('image')->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('service_galleries');
     }
 };

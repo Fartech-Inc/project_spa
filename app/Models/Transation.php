@@ -5,16 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Testimonial extends Model
+class Transation extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
+        "code",
         "user_id",
         "service_id",
-        "transaction_id",
-        "rating",
-        "message",
+        "status",
+        "total_price",
+        "payment_type",
+        "transation_date",
+        "start_time",
+        "end_time",
     ];
 
     public function user()
@@ -27,8 +31,13 @@ class Testimonial extends Model
         return $this->belongsTo(Service::class);
     }
 
-    public function transaction()
+    public function detail_transations()
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->hasMany(DetailTransation::class);
+    }
+
+    public function testimonial()
+    {
+        return $this->hasOne(Testimonial::class);
     }
 }
