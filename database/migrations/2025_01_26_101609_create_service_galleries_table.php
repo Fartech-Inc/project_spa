@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('service_id')->index();
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->string('image')->index();
+            $table->boolean('is_thumbnail')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
