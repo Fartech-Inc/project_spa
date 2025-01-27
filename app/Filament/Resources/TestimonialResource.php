@@ -23,6 +23,16 @@ class TestimonialResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\TextInput::make('service_id')
+                    ->relationship('service', 'name')
+                    ->label('Service')
+                    ->required()
+                    ->disabled(),
+                Forms\Components\TextInput::make('transaction_id')
+                    ->relationship('transaction', 'code')
+                    ->label('Transaction')
+                    ->required()
+                    ->disabled(),
                 Forms\Components\Select::make('customer_id')
                     ->relationship('customer', 'name')
                     ->label('Nama')
@@ -44,9 +54,16 @@ class TestimonialResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('service.name')
+                    ->label('Service')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('transaction.code')
+                    ->label('Transaction')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
                 Tables\Columns\TextColumn::make('message')->label('Message'),
                 Tables\Columns\TextColumn::make('rating')->label('Rating'),
+                Tables\Columns\TextColumn::make('created_at')->label('Tanggal Dibuat')->sortable(),
             ])
             ->filters([
                 //
@@ -75,5 +92,10 @@ class TestimonialResource extends Resource
             'create' => Pages\CreateTestimonial::route('/create'),
             'edit' => Pages\EditTestimonial::route('/{record}/edit'),
         ];
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 }
