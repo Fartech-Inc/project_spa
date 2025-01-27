@@ -38,6 +38,25 @@ class UserResource extends Resource
                     ->required()
                     ->minLength(8)
                     ->maxLength(255),
+                Forms\Components\TextInput::make('phone')
+                    ->label('Telepon')
+                    ->required()
+                    ->tel()
+                    ->maxLength(20),
+                Forms\Components\Select::make('role')
+                    ->label('Role')
+                    ->required()
+                    ->options([
+                        'admin' => 'Admin',
+                        'user' => 'User',
+                    ]),
+                Forms\Components\DateTimePicker::make('bod')
+                    ->label('Tanggal Lahir')
+                    ->required(),
+                Forms\Components\FileUpload::make('image')
+                    ->label('Foto')
+                    ->image()
+                    ->directory('users/images'),
             ]);
     }
 
@@ -47,6 +66,11 @@ class UserResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email'),
+                Tables\Columns\TextColumn::make('phone')->label('Telepon'),
+                Tables\Columns\TextColumn::make('role')->label('Role'),
+                Tables\Columns\TextColumn::make('bod')->label('Tanggal Lahir')->format('d/m/Y'),
+                Tables\Columns\ImageColumn::make('image')->label('Foto'),
+                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->format('d/m/Y H:i'),
             ])
             ->filters([
                 //

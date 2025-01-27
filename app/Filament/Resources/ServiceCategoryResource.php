@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CustomerResource\Pages;
-use App\Filament\Resources\CustomerResource\RelationManagers;
-use App\Models\Customer;
+use App\Filament\Resources\ServiceCategoryResource\Pages;
+use App\Filament\Resources\ServiceCategoryResource\RelationManagers;
+use App\Models\ServiceCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CustomerResource extends Resource
+class ServiceCategoryResource extends Resource
 {
-    protected static ?string $model = Customer::class;
+    protected static ?string $model = ServiceCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -27,22 +27,6 @@ class CustomerResource extends Resource
                     ->label('Nama')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->label('Email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->label('Password')
-                    ->password()
-                    ->required()
-                    ->minLength(8)
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->label('Telepon')
-                    ->required()
-                    ->tel()
-                    ->maxLength(20),
             ]);
     }
 
@@ -51,8 +35,6 @@ class CustomerResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
-                Tables\Columns\TextColumn::make('email')->label('Email'),
-                Tables\Columns\TextColumn::make('phone')->label('Telepon'),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->label('Tanggal Dibuat')->sortable(),
             ])
             ->filters([
@@ -78,9 +60,9 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
-            'create' => Pages\CreateCustomer::route('/create'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'index' => Pages\ListServiceCategories::route('/'),
+            'create' => Pages\CreateServiceCategory::route('/create'),
+            'edit' => Pages\EditServiceCategory::route('/{record}/edit'),
         ];
     }
 }
