@@ -85,18 +85,15 @@ class TransactionResource extends Resource
                             'success' => 'success',
                             'cancel' => 'danger',
                         };
-                    })
-                    ->options([
-                        'pending' => 'Pending',
-                        'success' => 'Success',
-                        'cancel' => 'Cancel',
-                    ]),
+                    }),
                 Tables\Columns\TextColumn::make('payment_type')
-                    ->label('Payment Type')
-                    ->options([
-                        'full_payment' => 'Full Payment',
-                        'down_payment' => 'Down Payment',
-                    ]),
+                    ->badge(function ($value) {
+                        return match ($value) {
+                            'full_payment' => 'success',
+                            'down_payment' => 'warning',
+                        };
+                    })
+                    ->label('Payment Type'),
                 Tables\Columns\TextColumn::make('transaction_date')->label('Transaction Date'),
                 Tables\Columns\TextColumn::make('start_time')->label('Start Time'),
                 Tables\Columns\TextColumn::make('end_time')->label('End Time'),

@@ -50,13 +50,12 @@ class UserResource extends Resource
                         'admin' => 'Admin',
                         'user' => 'User',
                     ]),
-                Forms\Components\DateTimePicker::make('bod')
+                Forms\Components\DatePicker::make('bod')
                     ->label('Tanggal Lahir')
                     ->required(),
                 Forms\Components\FileUpload::make('image')
                     ->label('Foto')
-                    ->image()
-                    ->directory('users/images'),
+                    ->directory('users'),
             ]);
     }
 
@@ -67,10 +66,17 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email'),
                 Tables\Columns\TextColumn::make('phone')->label('Telepon'),
-                Tables\Columns\TextColumn::make('role')->label('Role'),
-                Tables\Columns\TextColumn::make('bod')->label('Tanggal Lahir')->format('d/m/Y'),
+                Tables\Columns\TextColumn::make('role')
+                    ->label('Role')
+                    ->formatStateUsing(function ($value) {
+                        return match ($value) {
+                            'admin' => 'Admin',
+                            'user' => 'User',
+                        };
+                    }),
+                Tables\Columns\TextColumn::make('bod')->label('Tanggal Lahir'),
                 Tables\Columns\ImageColumn::make('image')->label('Foto'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')->format('d/m/Y H:i'),
+                Tables\Columns\TextColumn::make('created_at')->label('Tanggal Dibuat'),
             ])
             ->filters([
                 //

@@ -44,10 +44,8 @@ class ProductResource extends Resource
                     ->required(),
                 Forms\Components\TextInput::make('image')
                     ->label('Image')
-                    ->required()
-                    ->image()
-                    ->imageWidth(200)
-                    ->imageHeight(200),
+                    ->directory('products')
+                    ->required(),
             ]);
     }
 
@@ -70,9 +68,7 @@ class ProductResource extends Resource
                 Tables\Columns\TextColumn::make('weight')
                     ->label('Weight'),
                 Tables\Columns\ImageColumn::make('image')
-                    ->label('Image')
-                    ->imageWidth(50)
-                    ->imageHeight(50),
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At'),
             ])

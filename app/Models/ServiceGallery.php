@@ -11,7 +11,8 @@ class ServiceGallery extends Model
 
     protected $fillable = [
         'service_id',
-        'image'
+        'image',
+        'is_thumbnail'
     ];
 
     public function service()

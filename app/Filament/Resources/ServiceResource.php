@@ -23,7 +23,7 @@ class ServiceResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('service_category_id')
+                Forms\Components\Select::make('service_category_id')
                     ->relationship('service_category', 'name')
                     ->label('Kategori Layanan')
                     ->required()
@@ -36,7 +36,7 @@ class ServiceResource extends Resource
                     ->label('Harga')
                     ->required()
                     ->numeric(),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->label('Deskripsi')
                     ->required(),
             ]);
@@ -55,8 +55,6 @@ class ServiceResource extends Resource
                 Tables\Columns\TextColumn::make('price')
                     ->sortable()
                     ->label('Harga'),
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Deskripsi'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->label('Tanggal Dibuat')
