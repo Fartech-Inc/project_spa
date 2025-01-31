@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>Pijat | Home</title>
 </head>
 <body>
     <x-navbar/>
@@ -28,9 +28,11 @@
         <div>
             <div class="text-[#10062B] flex items-center justify-between mx-14 py-5 text-xl font-bold">
                 <p>Jasa Kami</p>
-                <a>Explore All</a>
+                <a href="{{ route('web.services') }}">Explore All</a>
             </div>
-            <x-card-home :services="$services"></x-card-home>
+            <a href="">
+                <x-card-home :services="$services"></x-card-home>
+            </a>
         </div>
         <div class="mt-20">
             <p class="text-[#3E443A] text-2xl text-center">Kenapa Harus Memilih</p>

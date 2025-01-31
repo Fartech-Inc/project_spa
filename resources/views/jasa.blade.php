@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>Pijat | Services</title>
 </head>
 <body>
     <x-navbar></x-navbar>
@@ -21,20 +21,14 @@
             </div>
         </div>
     </div>
-    <div class="grid grid-cols-3 bg-white rounded-3xl mx-14 border border-gray-500 mt-5 p-5">
-        <div class="col-span-3 mb-5">
-            <h1 class="text-3xl font-bold text-[#10062B]">{{ $services['big_title'] }}</h1>
+    @foreach($service_categories as $category)
+        <div class="grid grid-cols-3 bg-white rounded-3xl mx-14 border border-gray-500 mt-5 p-5">
+            <div class="col-span-3 mb-5">
+                <h1 class="text-3xl font-bold text-[#10062B]">{{ $category->name }}</h1>
+            </div>
+            <x-card-jasa :services="$category->services" />
         </div>
-        <x-card-jasa :services="$services['items']" />
-        <div class="col-span-3 mb-5">
-            <h1 class="text-3xl font-bold text-[#10062B]">{{ $services['big_title'] }}</h1>
-        </div>
-        <x-card-jasa :services="$services['items']" />
-        <div class="col-span-3 mb-5">
-            <h1 class="text-3xl font-bold text-[#10062B]">{{ $services['big_title'] }}</h1>
-        </div>
-        <x-card-jasa :services="$services['items']" />
-    </div>
+    @endforeach
     <x-footer></x-footer>
 </body>
 </html>

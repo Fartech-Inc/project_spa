@@ -5,7 +5,7 @@
     </a>
     <div class="flex gap-5 text-[#10062B]">
         <a href="/">Home</a>
-        <a href="/jasa">Jasa</a>
+        <a href="{{ route('web.services') }}">Jasa</a>
         <a href="">Testimonials</a>
     </div>
     <div class="flex items-center gap-3 relative">

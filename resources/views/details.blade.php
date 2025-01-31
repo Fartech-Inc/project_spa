@@ -5,24 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Document</title>
+    <title>Pijat | Details</title>
 </head>
 <body>
     <x-navbar></x-navbar>
     <div class="flex items-center justify-between mx-14">
-        <p class="text-[#10062B] text-3xl font-bold">Pijat Tradisional</p>
+        <p class="text-[#10062B] text-3xl font-bold">{{ $service->name }}</p>
         <p>(4,389)</p>
     </div>
     <div class="grid grid-cols-3 w-max gap-10 mx-14 mt-10">
-        <div class="bg-white w-52 px-5 py-5 rounded-xl border">
-            <img src="img/massage.png" alt="img">
-        </div>
-        <div class="bg-white w-52 px-5 py-5 rounded-xl border">
-            <img src="img/massage.png" alt="img">
-        </div>
-        <div class="bg-white w-52 px-5 py-5 rounded-xl border">
-            <img src="img/massage.png" alt="img">
-        </div>
+        @foreach ($service->service_galleries as $item)
+            <div class="bg-white w-52 px-5 py-5 rounded-xl border">
+                <img src="{{ asset('storage/' . $item->image) }}" alt="img">
+            </div>
+        @endforeach
     </div>
     <div class="flex items-center gap-10 justify-center my-7">
         <div class="flex items-center gap-2">
@@ -84,9 +80,18 @@
     <div>
         <div class="text-[#10062B] flex items-center justify-between mx-14 py-5 text-xl font-bold">
             <p>Jasa Kami</p>
-            <a>Explore All</a>
+            <a href="{{ route('web.services') }}">Explore All</a>
         </div>
-        <x-card-home :services="$services"></x-card-home>
+        {{-- <a href="">
+            <x-card-home :services="$services"></x-card-home>
+        </a> --}}
+        <div class="flex flex-wrap gap-4">
+            @foreach($services as $service)
+                <a href="{{ route('web.service', $service->id) }}" class="w-1/3">
+                    <x-card-home :services="[$service]" />
+                </a>
+            @endforeach
+        </div>
     </div>
     <x-footer></x-footer>
 </body>

@@ -11,6 +11,7 @@ use App\Http\Controllers\ForgotPasswordContoller;
 // Web
 use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\AuthController;
+use App\Http\Controllers\Web\SiteController;
 
 
 // AUTH
@@ -26,7 +27,11 @@ Route::prefix('profile')->middleware('auth:web')->group(function () {
     Route::post('/', [ProfileController::class, 'update'])->name('user.profile.update');
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [SiteController::class, 'index'])->name('home');
+Route::get('/services', [SiteController::class, 'services'])->name('web.services');
+Route::get('/service/{id}', [SiteController::class, 'service'])->name('web.service');
+
+
 Route::get('/jasa', [JasaController::class, 'index']);
 Route::get('/details', [DetailsController::class, 'index']);
 Route::get('/mybooking', [MybookingController::class, 'index']);
