@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\DetailsController;
 use App\Http\Controllers\MybookingController;
+use App\Http\Controllers\ForgotPasswordContoller;
 
 // Web
 use App\Http\Controllers\Web\ProfileController;
@@ -29,3 +30,5 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/jasa', [JasaController::class, 'index']);
 Route::get('/details', [DetailsController::class, 'index']);
 Route::get('/mybooking', [MybookingController::class, 'index']);
+Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
+Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);

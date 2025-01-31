@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Pijat | Login</title>
+    <title>Pijat | Forgot Password</title>
     <script>
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('passwordInput');
@@ -32,8 +32,8 @@
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Sign in to Pijat</p>
-            @if (session('success'))
+            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Forgot Password</p>
+            {{-- @if (session('success'))
                 <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
                     {{ session('success') }}
                 </div>
@@ -53,14 +53,17 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif --}}
             <form action="{{ route('auth.login.process') }}" method="POST" class="mx-20">
                 @csrf
                 <div>
-                    <p class="text-[#10062B]">Email Address</p>
+                    <p class="text-[#10062B] mb-2">Email Address</p>
                     <input type="email" placeholder="Write your email" class="w-full px-5 py-3 rounded-full shadow-xl" name="email" id="email" value="{{ old('email') }}">
                 </div>
-                <div class="relative mt-5">
+                <div class="flex items-center justify-center">
+                    <a href="/login" class=" my-5 hover:text-[#F6AFF2] hover:underline transition">Back To Sign</a>
+                </div>
+                {{-- <div class="relative mt-5">
                     <p class="text-[#10062B]">Password</p>
                     <div class="relative">
                         <input id="passwordInput" type="password" placeholder="Input your password" class="w-full px-5 py-3 rounded-full shadow-xl" name="password" id="password">
@@ -71,10 +74,11 @@
                     </div>
                 </div>
                 <div class="text-right my-5">
-                    <a href="/forgot-pass" class="text-[#5E677E] hover:text-[#F6AFF2] transition">Forgot my password</a>
-                </div>
-                <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl">Sign In</button>
-                <a href="{{ route('auth.register') }}" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a>
+                    <a href="/" class="text-[#5E677E] hover:text-[#F6AFF2] transition">Forgot my password</a>
+                </div> --}}
+                {{-- <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl">Kirim</button> --}}
+                <a href="/forgot-pass-otp" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl block">Kirim</a>
+                {{-- <a href="{{ route('auth.register') }}" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a> --}}
             </form>
         </div>
         {{-- Right Section --}}

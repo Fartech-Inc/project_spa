@@ -5,21 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
-    <title>Pijat | Login</title>
+    <title>Pijat | Forgot Password</title>
     <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('passwordInput');
-            const eyeIcon = document.getElementById('eyeIcon');
-            const eyeSlashIcon = document.getElementById('eyeSlashIcon');
-    
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.style.display = 'block';
-                eyeSlashIcon.style.display = 'none';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.style.display = 'none';
-                eyeSlashIcon.style.display = 'block';
+        function moveToNextInput(event, currentInputIndex) {
+            const inputs = document.querySelectorAll('.otp-input');
+            const maxIndex = inputs.length - 1;
+            
+            if (event.inputType === "deleteContentBackward" && currentInputIndex > 0) {
+                inputs[currentInputIndex].value = "";
+                inputs[currentInputIndex - 1].focus();
+            } else if (event.target.value.length === 1 && currentInputIndex < maxIndex) {
+                inputs[currentInputIndex + 1].focus();
             }
         }
     </script>
@@ -32,8 +28,8 @@
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Sign in to Pijat</p>
-            @if (session('success'))
+            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Forgot Password</p>
+            {{-- @if (session('success'))
                 <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
                     {{ session('success') }}
                 </div>
@@ -53,14 +49,23 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+            @endif --}}
             <form action="{{ route('auth.login.process') }}" method="POST" class="mx-20">
                 @csrf
-                <div>
-                    <p class="text-[#10062B]">Email Address</p>
-                    <input type="email" placeholder="Write your email" class="w-full px-5 py-3 rounded-full shadow-xl" name="email" id="email" value="{{ old('email') }}">
+                <p class="text-[#10062B] text-center mb-2">Enter 6-digit Code</p>
+                    <div class="flex justify-center items-center gap-2">
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 0)" />
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 1)" />
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 2)" />
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 3)" />
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 4)" />
+                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center text-xl border border-gray-300 rounded-full" oninput="moveToNextInput(event, 5)" />
+                    </div>
+                <div class="flex items-center justify-center gap-1">
+                    <p>If you didn't receive a code, </p>
+                    <a href="/login" class=" my-5 text-[#F6AFF2] hover:underline transition">Resend</a>
                 </div>
-                <div class="relative mt-5">
+                {{-- <div class="relative mt-5">
                     <p class="text-[#10062B]">Password</p>
                     <div class="relative">
                         <input id="passwordInput" type="password" placeholder="Input your password" class="w-full px-5 py-3 rounded-full shadow-xl" name="password" id="password">
@@ -71,10 +76,10 @@
                     </div>
                 </div>
                 <div class="text-right my-5">
-                    <a href="/forgot-pass" class="text-[#5E677E] hover:text-[#F6AFF2] transition">Forgot my password</a>
-                </div>
-                <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl">Sign In</button>
-                <a href="{{ route('auth.register') }}" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a>
+                    <a href="/" class="text-[#5E677E] hover:text-[#F6AFF2] transition">Forgot my password</a>
+                </div> --}}
+                <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Kirim</button>
+                {{-- <a href="{{ route('auth.register') }}" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a> --}}
             </form>
         </div>
         {{-- Right Section --}}
