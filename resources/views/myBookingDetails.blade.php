@@ -141,7 +141,7 @@
     </div>
 
     <a href="/mybooking-success" class="flex justify-center items-center w-full text-center font-semibold bg-[#FF48B6] py-3 my-5 mx-20 rounded-full text-white">Bayar /success</a>
-    <a href="/" class="flex justify-center items-center w-full text-center font-semibold bg-[#FF48B6] py-3 my-5 mx-20 rounded-full text-white">Bayar /failed</a>
+    <a href="/mybooking-failed" class="flex justify-center items-center w-full text-center font-semibold bg-[#FF48B6] py-3 my-5 mx-20 rounded-full text-white">Bayar /failed</a>
 
 </div>
     <x-footer></x-footer>
