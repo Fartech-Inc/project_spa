@@ -51,6 +51,44 @@
                 <x-card-testimonials></x-card-testimonials>
                 <x-card-testimonials></x-card-testimonials>
             </div>
+            <div class="flex items-center gap-5 my-5">
+                <img src="img/logo.png" alt="img pp">
+                <div class="border bg-white rounded-2xl p-5 w-full">              
+                    <div id="rating" class="flex">
+                        <label>
+                            <input type="radio" name="rating" class="hidden" value="1">
+                            <svg data-value="1" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                            </svg>
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" class="hidden" value="2">
+                            <svg data-value="2" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                            </svg>
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" class="hidden" value="3">
+                            <svg data-value="3" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                            </svg>
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" class="hidden" value="4">
+                            <svg data-value="4" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                            </svg>
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" class="hidden" value="5">
+                            <svg data-value="5" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                            </svg>
+                        </label>
+                    </div>
+                    <input class="w-full mt-3 border rounded-lg px-2 py-3" type="text" placeholder="Tambahkan Komentar...">
+                </div>
+            </div>
         </div>
         <div class="bg-white rounded-2xl border border-gray-300 w-max p-5">
             <p class="font-semibold">Book Sekarang</p>
@@ -95,4 +133,20 @@
     </div>
     <x-footer></x-footer>
 </body>
+
+<script>
+    const stars = document.querySelectorAll('#rating svg');
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            stars.forEach((s, i) => {
+                s.classList.remove('text-yellow-500');
+                s.classList.add('text-gray-300');
+                if (i <= index) {
+                    s.classList.remove('text-gray-300');
+                    s.classList.add('text-yellow-500');
+                }
+            });
+        });
+    });
+</script>
 </html>
