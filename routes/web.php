@@ -38,3 +38,4 @@ Route::get('/mybooking', [MybookingController::class, 'index']);
 Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
 Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);
 Route::get('/mybooking-details', [MybookingController::class, 'myBookingDetails']);
+Route::get('/mybooking-success', [MybookingController::class, 'myBookingSuccess']);

@@ -39,4 +39,14 @@ class MybookingController extends Controller
     {
         return view("myBookingDetails");
     }
+
+    public function myBookingSuccess()
+    {
+        return view("myBookingSuccess");
+    }
+
+    public function myBookingFailed()
+    {
+        return view("myBookingFailed");
+    }
 }
