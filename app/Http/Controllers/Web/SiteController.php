@@ -83,4 +83,12 @@ class SiteController extends Controller
 
         return view("details", compact("service", "services"));
     }
+
+    public function booking_page(Request $request, $id){
+        $service = Service::with(['service_galleries'])
+            ->where('id', $id)
+            ->firstOrFail();
+
+        return view("mybooking", compact("service"));
+    }
 }

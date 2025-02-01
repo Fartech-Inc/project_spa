@@ -42,7 +42,9 @@
         <div class="">
             <div>
                 <p class="text-xl font-semibold">About Product</p>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus sint fugiat commodi et libero dolore corporis praesentium esse cum? Enim cupiditate unde vitae fuga nisi alias qui minima eius possimus.</p>
+                <div class="my-3">
+                    {!! $service->description !!}
+                </div>
             </div>
             <p class="font-semibold">Real Testimonials</p>
             <div class="grid grid-cols-2 gap-3">
@@ -93,7 +95,7 @@
         <div class="bg-white rounded-2xl border border-gray-300 w-max p-5">
             <p class="font-semibold">Book Sekarang</p>
             <p class="font-semibold">Mulai</p>
-            <p class="font-bold text-2xl">Rp150.000</p>
+            <p class="font-bold text-2xl">Rp{{ number_format($service->price) }}</p>
             <div class="flex items-center gap-3">
                 <x-fluentui-checkmark-16 class="bg-[#FF48B6] p-1 rounded-full w-6 text-white"/>
                 <p class="font-semibold">Handuk Bersih dan Higienis.</p>
@@ -111,7 +113,7 @@
                 <p class="font-semibold">Layanan profesional oleh terapis berpengalaman.</p>
             </div>
             <div>
-                <button class="bg-[#FF48B6] px-10 py-3 m-auto rounded-full">Booking</button>
+                <a href="{{ route('web.booking.page', $service->id) }}" class="bg-[#FF48B6] px-10 py-3 m-auto rounded-full">Booking</a>
             </div>
         </div>
     </div>
@@ -123,10 +125,12 @@
         {{-- <a href="">
             <x-card-home :services="$services"></x-card-home>
         </a> --}}
-        <div class="flex flex-wrap gap-4">
-            @foreach($services as $service)
-                <a href="{{ route('web.service', $service->id) }}" class="w-1/3">
-                    <x-card-home :services="[$service]" />
+        <div class="flex gap-4 mx-14 overflow-x-auto pb-5">
+            @foreach ($services as $service)
+                <a href="{{ route('web.service', ['id' => $service->id]) }}">
+                    <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56" style="background-image: url('{{ $service['image'] }}'); background-size: cover; background-position: center;">
+                        <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service['name'] }}</p>
+                    </div>
                 </a>
             @endforeach
         </div>
