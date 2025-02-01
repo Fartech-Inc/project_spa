@@ -31,9 +31,6 @@ Route::get('/services', [SiteController::class, 'services'])->name('web.services
 Route::get('/service/{id}', [SiteController::class, 'service'])->name('web.service');
 Route::get('/booking/{id}', [SiteController::class, 'booking_page'])->name('web.booking.page');
 
-
-Route::get('/jasa', [JasaController::class, 'index']);
-Route::get('/details', [DetailsController::class, 'index']);
 Route::get('/mybooking', [MybookingController::class, 'index']);
 Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
 Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);

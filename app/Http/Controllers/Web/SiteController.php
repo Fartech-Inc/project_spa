@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 // Models
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\ServiceGallery;
+use App\Models\Product;
 
 class SiteController extends Controller
 {
@@ -36,14 +38,27 @@ class SiteController extends Controller
 
     public function services(Request $request)
     {
-        // Get all service categories with their respective services
+        // Ambil semua kategori layanan dengan layanan yang tidak dihapus
         $service_categories = ServiceCategory::with(['services' => function ($query) {
             $query->whereNull('deleted_at');
         }])
-            ->whereNull('deleted_at')
-            ->get();
+        ->whereNull('deleted_at');
 
-        // Attach images to each service
+        // Jika ada pencarian, filter layanan berdasarkan nama
+        if ($request->has('search')) {
+            $search = $request->input('search');
+
+            // Filter hanya kategori yang memiliki layanan sesuai pencarian
+            $service_categories = $service_categories->whereHas('services', function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            })->with(['services' => function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            }]);
+        }
+
+        $service_categories = $service_categories->get();
+
+        // Tambahkan gambar untuk setiap layanan
         foreach ($service_categories as $category) {
             foreach ($category->services as $service) {
                 $thumbnail = ServiceGallery::where('service_id', $service->id)
@@ -85,10 +100,19 @@ class SiteController extends Controller
     }
 
     public function booking_page(Request $request, $id){
-        $service = Service::with(['service_galleries'])
-            ->where('id', $id)
+        $service = Service::where('id', $id)
             ->firstOrFail();
 
-        return view("mybooking", compact("service"));
+        $service->image = ServiceGallery::where('service_id', $service->id)
+            ->where('is_thumbnail', true)
+            ->firstOrFail();
+
+        $products = Product::with(['product_categories'])
+            ->whereNull('deleted_at')
+            ->get();
+
+        $user = Auth::user();
+
+        return view("myBookingDetails", compact("service", "products", "user"));
     }
 }
