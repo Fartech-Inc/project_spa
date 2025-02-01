@@ -34,4 +34,9 @@ class MybookingController extends Controller
 
         return view('mybooking', compact('services'));
     }
+
+    public function myBookingDetails()
+    {
+        return view("myBookingDetails");
+    }
 }
