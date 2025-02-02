@@ -30,9 +30,18 @@
                 <p>Jasa Kami</p>
                 <a href="{{ route('web.services') }}">Explore All</a>
             </div>
-            <a href="">
+            {{-- <a href="">
                 <x-card-home :services="$services"></x-card-home>
-            </a>
+            </a> --}}
+            <div class="flex gap-4 mx-14 overflow-x-auto pb-5">
+                @foreach ($services as $service)
+                    <a href="{{ route('web.service', ['id' => $service->id]) }}">
+                        <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56" style="background-image: url('{{ $service['image'] }}'); background-size: cover; background-position: center;">
+                            <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service['name'] }}</p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
         </div>
         <div class="mt-20">
             <p class="text-[#3E443A] text-2xl text-center">Kenapa Harus Memilih</p>

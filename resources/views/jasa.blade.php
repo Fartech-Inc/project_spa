@@ -12,13 +12,16 @@
     <div class="flex items-center justify-between mx-14">
         <p class="text-4xl text-[#10062B] font-bold">Jasa Pijat</p>
         <div class="relative mt-5 w-2/6">
-            <div class="relative">
-                <input  type="text" placeholder="Temukan Pijat Anda" class="w-full px-5 py-3 rounded-full shadow-xl"  >
-                <span class="absolute top-3 right-5 cursor-pointer">
-                    {{-- <x-iconsax-bro-eye-slash  class="w-5 text-[#5E677E]"  style="display: block;"></x-iconsax-bro-eye-slash> --}}
-                    <x-fluentui-search-48 class="w-6 text-[#5E677E]"/>
-                </span>
-            </div>
+            <form method="GET" action="{{ route('web.services') }}">
+                <div class="relative">
+                    <input type="text" name="search" placeholder="Temukan Pijat Anda" 
+                        class="w-full px-5 py-3 rounded-full shadow-xl" 
+                        value="{{ request()->search }}">
+                    <button type="submit" class="absolute top-3 right-5">
+                        <x-fluentui-search-48 class="w-6 text-[#5E677E]"/>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
     @foreach($service_categories as $category)
