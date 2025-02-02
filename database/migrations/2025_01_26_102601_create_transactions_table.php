@@ -20,6 +20,7 @@ return new class extends Migration
             $table->foreign('service_id')->references('id')->on('services')->onDelete('cascade');
             $table->enum('status', ['pending','success','cancel'])->default('pending')->index();
             $table->integer('total_price')->index();
+            $table->integer('total_paid')->index();
             $table->enum('payment_type', ['full_payment','down_payment'])->index();
             $table->timestamp('transaction_date')->index();
             $table->time('start_time')->index();
