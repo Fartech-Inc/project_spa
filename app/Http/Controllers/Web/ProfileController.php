@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 // Model
 use App\Models\User;
+use App\Models\Transaction;
 
 // Helper
 use App\Helper\InputValidationHelper;
@@ -134,6 +135,68 @@ class ProfileController extends Controller
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Terjadi kesalahan saat memperbarui data.'], 500);
+        }
+    }
+
+    public function my_transations(Request $request){
+        $user = Auth::user();
+
+        // get all transaction where user_id = $user->id
+        $transactions = Transaction::where('user_id', $user->id)
+            ->with('service')
+            ->get();
+
+        foreach ($transactions as $transaction) {
+            // change transaction_date format to M d, Y
+            $transaction->transaction_date = date('M d, Y', strtotime($transaction->transaction_date));
+
+            // get day name from transaction_date
+            $transaction->day = date('l', strtotime($transaction->transaction_date));
+
+            // change format start end time to H:i
+            $transaction->start_time = date('H:i', strtotime($transaction->start_time));
+            $transaction->end_time = date('H:i', strtotime($transaction->end_time));
+
+            // get AM or PM from end time
+            $transaction->end_time_am_pm = date('A', strtotime($transaction->end_time));
+        }
+
+        return view("mybooking", compact("transactions"));
+    }
+
+    public function cancel_transaction(Request $request, $id){
+        try {
+            $user = Auth::user();
+
+            // Cari transaksi berdasarkan ID dan User ID
+            $transaction = Transaction::where('id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if (!$transaction) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Transaksi tidak ditemukan.');
+            }
+
+            // Cek apakah transaksi sudah dibatalkan sebelumnya
+            if ($transaction->status == 'cancel') {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Transaksi ini sudah dibatalkan sebelumnya.');
+            }
+
+            // Ubah status menjadi cancel
+            $transaction->status = 'cancel';
+            $transaction->save();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Transaksi berhasil dibatalkan.');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', 'Terjadi kesalahan saat membatalkan transaksi. Silakan coba lagi.');
         }
     }
 }

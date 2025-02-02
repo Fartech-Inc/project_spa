@@ -6,14 +6,14 @@
     <div class="flex gap-5 text-[#10062B]">
         <a href="/">Home</a>
         <a href="{{ route('web.services') }}">Jasa</a>
-        <a href="">Testimonials</a>
+        {{-- <a href="">Testimonials</a> --}}
     </div>
     <div class="flex items-center gap-3 relative">
-        <a class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4" href="/mybooking">
-            <x-fluentui-book-add-20-o />
-            <p>My Booking</p>
-        </a>
         @if (Auth::user())
+            <a class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4" href="{{ route('user.profile.my_transactions') }}">
+                {{-- <x-fluentui-book-add-20-o /> --}}
+                <p>My Booking</p>
+            </a>
             <!-- Dropdown Toggle -->
             <div class="relative">
                 <button onclick="toggleDropdown()" class="border border-[#10062B] rounded-full py-3 px-4 flex items-center gap-2" id="dropdownButton">

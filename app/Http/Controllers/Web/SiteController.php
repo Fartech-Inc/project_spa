@@ -5,12 +5,21 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+
+// Helper
+use App\Helper\InputValidationHelper;
 
 // Models
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use App\Models\ServiceGallery;
 use App\Models\Product;
+use App\Models\Transaction;
+use App\Models\DetailTransaction;
+use App\Models\Testimonial;
+use App\Models\User;
 
 class SiteController extends Controller
 {
@@ -28,7 +37,7 @@ class SiteController extends Controller
         foreach ($services as $service){
             foreach ($service_galleries as $service_gallery){
                 if($service->id == $service_gallery->service_id){
-                    $service->image = asset('storage/' . $service_gallery->image);
+                    $service->image = asset('storage/public/' . $service_gallery->image);
                 }
             }
         }
@@ -66,7 +75,7 @@ class SiteController extends Controller
                     ->whereNull('deleted_at')
                     ->first();
 
-                $service->image = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
+                $service->image = $thumbnail ? asset('storage/public/' . $thumbnail->image) : asset('img/massage.png');
             }
         }
 
@@ -91,28 +100,275 @@ class SiteController extends Controller
         foreach ($services as $other_service) {
             foreach ($service_galleries as $service_gallery) {
                 if ($other_service->id == $service_gallery->service_id) {
-                    $other_service->image = asset('storage/' . $service_gallery->image);
+                    $other_service->image = asset('storage/public/' . $service_gallery->image);
                 }
             }
         }
 
-        return view("details", compact("service", "services"));
+        $testimonials = Testimonial::where('service_id', $service->id)
+            ->whereNull('deleted_at')
+            ->with(['user'])
+            ->get();
+
+        // Calculate average rating
+        $averageRating = $testimonials->count() > 0 ? round($testimonials->avg('rating'), 1) : 0;
+
+        // check if user is logged in
+        $is_login = false;
+        if(Auth::check()){
+            $user = Auth::user();
+            $is_login = true;
+        }
+
+        // if is_login is true, get user transation data on this service
+        $transactions = null;
+        if($is_login){
+            $transactions = Transaction::where('user_id', $user->id)
+                ->where('service_id', $service->id)
+                ->whereNull('deleted_at')
+                ->get();
+        }
+        
+        $is_consuming = false;
+        // if transaction is not null and count is greater than 0, set is_consuming to true
+        if(!empty($transactions)){
+            $is_consuming = true;
+        }
+
+        return view("details", compact("service", "services", "testimonials", "averageRating", "is_login", "is_consuming"));
+    }
+
+    public function store_testimonial(Request $request, $id)
+    {
+        $validation = [
+            'rating' => 'required|integer|min:1|max:5',
+            'message' => 'required|string|max:1000',
+        ];
+        $message = [
+            'rating.required' => 'Rating harus diisi.',
+            'rating.integer' => 'Rating harus berupa angka.',
+            'rating.min' => 'Rating minimal 1.',
+            'rating.max' => 'Rating maksimal 5.',    
+            'message.required' => 'Pesan harus diisi.',
+            'message.string' => 'Pesan harus berupa teks.',
+            'message.max' => 'Pesan maksimal 1000 karakter.',
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // DB Transaction
+        DB::beginTransaction();
+        try{
+            if (!Auth::check()) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda harus login untuk memberikan testimonial.');
+            }
+
+            $user = Auth::user();
+
+            $transaction = Transaction::where('user_id', $user->id)
+                ->where('service_id', $id)
+                ->whereNull('deleted_at')
+                ->first();
+
+            if (!$transaction) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Anda harus membeli layanan ini sebelum memberikan testimonial.');
+            }
+
+            $message = InputValidationHelper::validate_input_text($request->message);
+            if (!$message) {
+                return redirect()
+                    ->back()
+                    ->with('error', 'Message tidak valid')
+                    ->withInput();
+            }
+
+            $data = new Testimonial;
+            $data->user_id = $user->id;
+            $data->service_id = $id;
+            $data->transaction_id = $transaction->id;
+            $data->rating = $request->rating;
+            $data->message = $message;
+            $data->save();
+
+            DB::commit();
+
+            return redirect()
+                ->back()
+                ->with('success', 'Testimonial berhasil dikirim. Terima kasih atas ulasan Anda!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->with('error', 'Terjadi kesalahan. Silahkan coba lagi.');  
+        }
     }
 
     public function booking_page(Request $request, $id){
         $service = Service::where('id', $id)
             ->firstOrFail();
 
-        $service->image = ServiceGallery::where('service_id', $service->id)
+        $service_thumbnail = ServiceGallery::where('service_id', $service->id)
             ->where('is_thumbnail', true)
-            ->firstOrFail();
+            ->first();
 
-        $products = Product::with(['product_categories'])
+        $service->image = asset('storage/public/' . $service_thumbnail->image);
+
+        $products = Product::with(['product_category'])
             ->whereNull('deleted_at')
             ->get();
 
         $user = Auth::user();
 
-        return view("myBookingDetails", compact("service", "products", "user"));
+        // create random code for booking with format #PJT + 4 random number and alphabet (uppercase)
+        $code = '#PJT' . strtoupper(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 4));
+
+        return view("myBookingDetails", compact("service", "products", "user", "code"));
     }
+
+    public function booking_process(Request $request){
+        $validation = [
+            "code" => "required|string",
+            "user_id"=> 'required|exists:users,id',
+            "service_id" => "required|exists:services,id",
+            "total_price" => "required|integer",
+            "transaction_date" => "required|date",
+            "start_time" => 'required|date_format:H:i',
+            "end_time" => 'required|date_format:H:i|after:start_time',
+            "payment_type" => 'required|in:full_payment,down_payment',
+        ];
+        $message = [
+            'required' => ':attribute tidak boleh kosong',
+            'exists' => ':attribute tidak valid',
+            'date' => ':attribute harus berupa tanggal',
+            'date_format' => ':attribute harus berupa format waktu',
+            'integer' => ':attribute harus berupa angka',
+            'after' => ':attribute harus lebih besar dari :date',
+            'in' => ':attribute tidak valid',
+        ];
+        $names = [
+            'code' => 'Code',
+            'user_id'=> 'User',
+            'service_id' => 'Service',
+            'total_price'=> 'Total Price',
+            'transaction_date'=> 'Transaction Date',
+            'start_time'=> 'Start Time',
+            'end_time'=> 'End Time',
+            'payment_type'=> 'Payment Type',
+        ];
+        $validator = Validator::make($request->all(), $validation, $message, $names);
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // DB Transaction
+        DB::beginTransaction();
+        try {
+
+            $transation_date = InputValidationHelper::validate_input_text($request->transaction_date);
+            if(!$transation_date){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Tanggal transaksi tidak valid')
+                    ->withInput();
+            }
+
+            $start_time = InputValidationHelper::validate_input_text($request->start_time);
+            if(!$start_time){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Waktu mulai tidak valid')
+                    ->withInput();
+            }
+
+            $end_time = InputValidationHelper::validate_input_text($request->end_time);
+            if(!$end_time){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Waktu selesai tidak valid')
+                    ->withInput();
+            }
+
+            $payment_type = InputValidationHelper::validate_input_text($request->payment_type);
+            if(!$payment_type){
+                return redirect()
+                    ->back()
+                    ->with('error', 'Jenis pembayaran tidak valid')
+                    ->withInput();
+            }
+
+            // get total paid from total price * 0.5
+            $total_paid = $request->total_price * 0.5;
+
+            // Create new transaction
+            $transaction = new Transaction();
+            $transaction->code = $request->code;
+            $transaction->user_id = $request->user_id;
+            $transaction->service_id = $request->service_id;
+            $transaction->total_price = $request->total_price;
+            $transaction->total_paid = $total_paid;
+            $transaction->transaction_date = $transation_date;
+            $transaction->start_time = $start_time;
+            $transaction->end_time = $end_time;
+            $transaction->payment_type = $payment_type;
+            $transaction->save();
+
+            // Create new transaction detail
+            if($request->product_id ){
+                foreach ($request->product_id as $product_id) {
+                    $detail = new DetailTransaction();
+                    $detail->transaction_id = $transaction->id;
+                    $detail->product_id = $product_id;
+                    $detail->quantity = 1;
+                    $detail->price = Product::find($product_id)->price;
+                    $detail->save();
+                }
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('web.booking.success', $transaction->id)
+                ->with('success', 'Booking berhasil');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()
+                ->back()
+                ->with('error', 'Terjadi kesalahan saat melakukan booking')
+                ->withInput();
+        }
+    }
+
+    public function booking_success(Request $request, $id){
+        // get transaction where id = $id
+        $transaction = Transaction::find($id);
+
+        if(!$transaction){
+            return redirect()
+                ->back()
+                ->with('error', 'Transaksi tidak ditemukan');
+        }
+
+        // if found, get the code
+        $code = $transaction->code;
+
+        return view("myBookingSuccess", compact("code"));
+    }
+
+    public function booking_failed(Request $request){
+        return view("myBookingFailed");
+    }    
 }

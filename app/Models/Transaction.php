@@ -15,6 +15,7 @@ class Transaction extends Model
         "service_id",
         "status",
         "total_price",
+        "total_paid",
         "payment_type",
         "transaction_date",
         "start_time",

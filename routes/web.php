@@ -20,20 +20,28 @@ Route::get('/register', [AuthController::class, 'register'])->name('auth.registe
 Route::post('/register', [AuthController::class, 'register_process'])->name('auth.register.process');
 Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-// PROFILE
-Route::prefix('profile')->middleware('auth:web')->group(function () {
-    Route::get('/', [ProfileController::class, 'index'])->name('user.profile');
-    Route::post('/', [ProfileController::class, 'update'])->name('user.profile.update');
-});
-
+// SITE
 Route::get('/', [SiteController::class, 'index'])->name('home');
 Route::get('/services', [SiteController::class, 'services'])->name('web.services');
 Route::get('/service/{id}', [SiteController::class, 'service'])->name('web.service');
-Route::get('/booking/{id}', [SiteController::class, 'booking_page'])->name('web.booking.page');
+
+// NEED TO LOGIN
+Route::group(['middleware' => ['auth:web']], function () {
+    Route::get('/booking/{id}', [SiteController::class, 'booking_page'])->name('web.booking.page');
+    Route::post('/booking', [SiteController::class, 'booking_process'])->name('web.booking.process');
+    Route::get('/success/{id}', [SiteController::class, 'booking_success'])->name('web.booking.success');
+    Route::get('/failed', [SiteController::class, 'booking_failed'])->name('web.booking.failed');
+    Route::post('/testimonial/{id}', [SiteController::class, 'store_testimonial'])->name('web.store.testimonial');
+
+    // PROFILE
+    Route::prefix('profile')->middleware('auth:web')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('user.profile');
+        Route::post('/', [ProfileController::class, 'update'])->name('user.profile.update');
+        Route::get('/my-transactions', [ProfileController::class, 'my_transations'])->name('user.profile.my_transactions');
+        Route::post('/cancel-transaction/{id}', [ProfileController::class, 'cancel_transaction'])->name('user.profile.cancel_transaction');
+    });
+});
 
 Route::get('/mybooking', [MybookingController::class, 'index']);
 Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
 Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);
-Route::get('/mybooking-details', [MybookingController::class, 'myBookingDetails']);
-Route::get('/mybooking-success', [MybookingController::class, 'myBookingSuccess']);
-Route::get('/mybooking-failed', [MybookingController::class, 'myBookingFailed']);
