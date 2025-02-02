@@ -67,13 +67,13 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->label('Email'),
                 Tables\Columns\TextColumn::make('phone')->label('Telepon'),
                 Tables\Columns\TextColumn::make('role')
-                    ->label('Role')
-                    ->formatStateUsing(function ($value) {
-                        return match ($value) {
-                            'admin' => 'Admin',
-                            'user' => 'User',
-                        };
-                    }),
+                    ->label('Role'),
+                // ->formatStateUsing(function ($value) {
+                //     return match ($value) {
+                //         'admin' => 'Admin',
+                //         'user' => 'User',
+                //     };
+                // }),
                 Tables\Columns\TextColumn::make('bod')->label('Tanggal Lahir'),
                 Tables\Columns\ImageColumn::make('image')->label('Foto'),
                 Tables\Columns\TextColumn::make('created_at')->label('Tanggal Dibuat'),

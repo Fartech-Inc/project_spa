@@ -27,7 +27,7 @@ class ServiceResource extends Resource
                     ->relationship('service_category', 'name')
                     ->label('Kategori Layanan')
                     ->required()
-                    ->disabled(),
+                    ->disabledOn('edit'),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->label('Nama')

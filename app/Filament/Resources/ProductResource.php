@@ -23,8 +23,8 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('category_id')
-                    ->relationship('category', 'name')
+                Forms\Components\Select::make('product_category_id')
+                    ->relationship('product_category', 'name')
                     ->label('Category')
                     ->required(),
                 Forms\Components\TextInput::make('name')
@@ -42,7 +42,7 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('weight')
                     ->label('Weight')
                     ->required(),
-                Forms\Components\TextInput::make('image')
+                Forms\Components\FileUpload::make('image')
                     ->label('Image')
                     ->directory('products')
                     ->required(),
@@ -53,7 +53,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('product_category.name')
                     ->label('Category')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
