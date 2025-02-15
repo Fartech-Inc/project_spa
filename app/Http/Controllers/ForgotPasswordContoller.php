@@ -15,4 +15,9 @@ class ForgotPasswordContoller extends Controller
     {
         return view('forgotPassOtp');
     }
+    
+    public function newPassword()
+    {
+        return view('newPassword');
+    }
 }

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\DetailsController;
+use App\Http\Controllers\ForgotPasswordContoller;
 use App\Http\Controllers\MybookingController;
 
 // Web
@@ -45,3 +46,4 @@ Route::group(['middleware' => ['auth:web']], function () {
 Route::get('/mybooking', [MybookingController::class, 'index']);
 Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
 Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);
+Route::get('/new-password', [ForgotPasswordContoller::class, 'newPassword']);
