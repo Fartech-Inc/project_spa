@@ -26,18 +26,21 @@ class TransactionResource extends Resource
                 Forms\Components\TextInput::make('code')
                     ->label('Code')
                     ->required(),
-                Forms\Components\TextInput::make('user_id')
+                Forms\Components\Select::make('user_id')
                     ->relationship('user', 'name')
                     ->label('User')
                     ->required()
                     ->disabled(),
-                Forms\Components\TextInput::make('service_id')
+                Forms\Components\Select::make('service_id')
                     ->relationship('service', 'name')
                     ->label('Service')
                     ->required()
                     ->disabled(),
                 Forms\Components\TextInput::make('total_price')
                     ->label('Total Price')
+                    ->required(),
+                Forms\Components\TextInput::make('total_paid')
+                    ->label('Total Paid')
                     ->required(),
                 Forms\Components\Select::make('status')
                     ->label('Status')
@@ -77,20 +80,34 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('user.name')->label('User')->searchable(),
                 Tables\Columns\TextColumn::make('service.name')->label('Service')->searchable(),
                 Tables\Columns\TextColumn::make('total_price')->label('Total Price'),
+                Tables\Columns\TextColumn::make('total_paid')->label('Total Paid'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->badge(function ($value) {
-                        return match ($value) {
-                            'pending' => 'warning',
-                            'success' => 'success',
-                            'cancel' => 'danger',
+                    ->badge()
+                    ->colors([
+                        'warning' => 'pending',
+                        'success' => 'success',
+                        'danger' => 'cancel',
+
+                    ])
+                    ->formatStateUsing(function ($state) {
+                        return match ($state) {
+                            'pending' => 'Pending',
+                            'success' => 'Success',
+                            'cancel' => 'Canger',
                         };
                     }),
                 Tables\Columns\TextColumn::make('payment_type')
-                    ->badge(function ($value) {
-                        return match ($value) {
-                            'full_payment' => 'success',
-                            'down_payment' => 'warning',
+                    ->badge()
+                    ->colors([
+                        'warning' => 'down_payment',
+                        'success' => 'full_payment',
+
+                    ])
+                    ->formatStateUsing(function ($state) {
+                        return match ($state) {
+                            'full_payment' => 'Full Payment',
+                            'down_payment' => 'Down Payment',
                         };
                     })
                     ->label('Payment Type'),

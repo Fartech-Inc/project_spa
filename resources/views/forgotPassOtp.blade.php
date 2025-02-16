@@ -80,19 +80,32 @@
                     <a href="{{ route('auth.forgotPassword') }}"
                         class=" my-5 text-[#F6AFF2] hover:underline transition">Resend</a>
                 </div> --}}
+                <input type="hidden" name="otp" id="otpHiddenInput" />
                 <button type="submit"
                     class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Verify
                     OTP</button>
 
                 {{-- NANTI PAKAI YANG BUTTON, <a> hanya untuk test --}}
                 {{-- <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Kirim</button> --}}
-                <a href="/new-password"
-                    class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Masuk</a>
+                {{-- <a href="/new-password"
+                    class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Masuk</a> --}}
 
                 <a href="{{ route('auth.register') }}"
                     class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create
                     New Account</a>
             </form>
+            <script>
+                const inputs = document.querySelectorAll('.otp-input');
+                const hiddenInput = document.getElementById('otpHiddenInput');
+
+                inputs.forEach((input, index) => {
+                    input.addEventListener('input', () => {
+                        let otpValue = "";
+                        inputs.forEach(i => otpValue += i.value);
+                        hiddenInput.value = otpValue;
+                    });
+                });
+            </script>
         </div>
         {{-- Right Section --}}
         <div class="w-1/2 bg-cover bg-center relative" style="background-image: url('img/bg-login.png');">

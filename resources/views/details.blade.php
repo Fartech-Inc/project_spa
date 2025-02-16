@@ -6,21 +6,72 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <title>Pijat | Details</title>
+    <style>
+        .star {
+            width: 24px;
+            height: 24px;
+            fill: gray; /* Default warna abu-abu */
+            cursor: pointer;
+            transition: fill 0.2s ease-in-out;
+        }
+
+        .star.active {
+            fill: gold; /* Warna bintang aktif */
+        }
+
+        .star.full {
+            fill: gold; /* Warna bintang penuh */
+        }
+
+        .star.half {
+            fill: url(#halfGradient); /* Warna setengah bintang */
+        }
+
+    </style>
 </head>
 <body>
     <x-navbar></x-navbar>
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mx-36 my-5" role="alert">
+            <strong class="font-bold">Terjadi Kesalahan!</strong>
+            <ul class="mt-2">
+                @foreach ($errors->all() as $error)
+                    <li class="text-sm">{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class="flex items-center justify-between mx-14">
         <p class="text-[#10062B] text-3xl font-bold">{{ $service->name }}</p>
         <div class="flex items-center gap-2">
             <p>({{ $testimonials->count() }})</p>
             <div class="flex">
                 @for ($i = 1; $i <= 5; $i++)
-                    <svg class="w-5 h-5 {{ $i <= round($averageRating) ? 'text-yellow-500' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                    </svg>
+                    @if ($i <= floor($averageRating))
+                        <!-- Bintang penuh -->
+                        <svg class="star full" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                        </svg>
+                    @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) >= 0.5)
+                        <!-- Setengah bintang -->
+                        <svg class="star half" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="halfGradient">
+                                    <stop offset="50%" stop-color="gold"/>
+                                    <stop offset="50%" stop-color="gray"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                        </svg>
+                    @else
+                        <!-- Bintang abu-abu -->
+                        <svg class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                        </svg>
+                    @endif
                 @endfor
             </div>
-            <p class="ml-2">{{ $averageRating }}/5</p>
+            <p class="ml-2">{{ number_format($averageRating, 1) }}/5</p>
         </div>
     </div>
     <div class="grid grid-cols-3 w-max gap-10 mx-14 mt-10">
@@ -61,26 +112,16 @@
                 @foreach ($testimonials as $testimonial)
                     <div class="bg-white border border-gray-400 w-56 p-3 rounded-xl">
                         <div class="flex gap-1 mb-2">
-                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
-                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
-                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
-                            <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
-                            <svg class="w-4 h-4 text-gray-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg class="star {{ $i <= $testimonial->rating ? 'active' : '' }}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
+                                </svg>
+                            @endfor
                         </div>
                         <p>{{ $testimonial->message }}</p>
                         <div class="flex items-center gap-3 my-2">
                             <img src="{{ asset($testimonial->user->image) }}" alt="pp" class="w-10 h-10 rounded-full object-cover">
-                            <div class="">
+                            <div>
                                 <p class="text-sm font-semibold">{{ $testimonial->user->name }}</p>
                                 <p class="text-sm">{{ $testimonial->created_at }}</p>
                             </div>
@@ -88,7 +129,7 @@
                     </div>
                 @endforeach
             </div>
-            @if (Auth::user() && $is_login && $is_consuming)
+            @if ($is_login === true && $is_consuming === true)
                 <div class="flex items-center gap-5 my-5">
                     <img src="{{ asset(Auth::user()->image) }}" alt="img pp" class="w-10 h-10 rounded-full object-cover">
                     <div class="border bg-white rounded-2xl p-5 w-full">
@@ -96,9 +137,9 @@
                             @csrf
                             <div id="rating" class="flex">
                                 @for ($i = 1; $i <= 5; $i++)
-                                    <label>
+                                    <label class="cursor-pointer">
                                         <input type="radio" name="rating" class="hidden" value="{{ $i }}">
-                                        <svg data-value="{{ $i }}" class="w-6 h-6 text-gray-300 hover:text-yellow-500 transition duration-200 cursor-pointer" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <svg data-value="{{ $i }}" class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
                                         </svg>
                                     </label>
@@ -152,26 +193,28 @@
         </div>
     </div>
     <x-footer></x-footer>
-</body>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stars = document.querySelectorAll('.star');
+            const inputs = document.querySelectorAll('input[name="rating"]');
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const stars = document.querySelectorAll('#rating svg');
-        stars.forEach((star, index) => {
-            star.addEventListener('click', () => {
-                document.querySelectorAll('input[name="rating"]').forEach((input, i) => {
-                    input.checked = i === index;
-                });
-                stars.forEach((s, i) => {
-                    s.classList.remove('text-yellow-500');
-                    s.classList.add('text-gray-300');
-                    if (i <= index) {
-                        s.classList.remove('text-gray-300');
-                        s.classList.add('text-yellow-500');
+            stars.forEach((star, index) => {
+                star.addEventListener('click', () => {
+                    console.log(`Bintang ke-${index + 1} diklik`); // Debugging
+
+                    // Set input radio yang sesuai
+                    inputs[index].checked = true;
+
+                    // Reset semua bintang ke abu-abu
+                    stars.forEach(s => s.classList.remove('active'));
+
+                    // Beri warna emas pada bintang yang dipilih dan sebelumnya
+                    for (let i = 0; i <= index; i++) {
+                        stars[i].classList.add('active');
                     }
                 });
             });
         });
-    });
-</script>
+    </script>
+</body>
 </html>

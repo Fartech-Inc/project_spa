@@ -21,6 +21,11 @@ class ForgotPasswordContoller extends Controller
         return view('forgotPassOtp');
     }
 
+    public function newPasswordForm()
+    {
+        return view('newPassword');
+    }
+
     public function sendOtp(Request $request)
     {
         // Validasi email yang dikirimkan
@@ -55,11 +60,34 @@ class ForgotPasswordContoller extends Controller
             'otp' => 'required|numeric|digits:6',
         ]);
 
-        // Compare the OTP from session and input
-        if ($request->otp == session('otp')) {
-            return redirect()->route('auth.resetPasswordForm');
+        // Cari user berdasarkan OTP yang dikirimkan
+        $user = User::where('otp', $request->otp)
+            ->where('otp_expiration', '>', Carbon::now()) // Pastikan OTP belum kadaluarsa
+            ->first();
+
+        if ($user) {
+            // Hapus OTP setelah berhasil digunakan
+            $user->otp = null;
+            $user->otp_expiration = null;
+            $user->save();
+
+            return redirect()->route('auth.resetPasswordForm')->with('success', 'OTP valid, silakan reset password Anda.');
         } else {
-            return back()->with('error', 'Invalid OTP');
+            return back()->with('error', 'OTP salah atau telah kadaluarsa.');
         }
+    }
+
+    public function newPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|min:6|confirmed',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return redirect()->route('auth.login')->with('success', 'Password berhasil direset. Silakan login.');
     }
 }

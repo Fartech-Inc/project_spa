@@ -20,8 +20,8 @@
             </div>
             <p>Gunakan kode booking di atas untuk memeriksa status pemesananmu</p>
             <div class="flex flex-col">
-                <a href="/mybooking-details" class="my-5 text-center font-semibold bg-[#FF48B6] py-3 rounded-full text-white">Booking other packages</a>
-                <a href="/mybooking" class=" text-center font-semibold bg-white py-3 rounded-full text-[#FF48B6] border-2 border-[#FF48B6]">View My booking</a>
+                <a href="{{ route('web.services') }}" class="my-5 text-center font-semibold bg-[#FF48B6] py-3 rounded-full text-white">Booking other packages</a>
+                <a href="{{ route('user.profile.my_transactions') }}" class=" text-center font-semibold bg-white py-3 rounded-full text-[#FF48B6] border-2 border-[#FF48B6]">View My booking</a>
             </div>
         </div>
         <img src="img/booking-success.png" alt="img booking success">

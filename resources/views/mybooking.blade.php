@@ -62,6 +62,9 @@
                             Batalkan
                         </button>
                     </form>
+                    <button class="bg-[#FF48B6] text-white px-4 py-2 rounded-lg" id="pay-button">
+                        Bayar
+                    </button>
                 @endif
             </div>
         @endforeach
@@ -71,6 +74,26 @@
         function confirmCancel() {
             return confirm("Apakah Anda yakin ingin membatalkan transaksi ini?");
         }
+    </script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    <script type="text/javascript">
+        document.getElementById('pay-button').onclick = function(){
+            @if(isset($transaction) && $transaction->token)
+                snap.pay('{{ $transaction->token }}', {
+                onSuccess: function(result){
+                    window.location = '{{ route("web.booking.success", ["id" => $transaction->id]) }}';
+                },
+                onPending: function(result){
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                },
+                onError: function(result){
+                    window.location = '{{ route("web.booking.failed") }}';
+                }
+                });
+            @else
+                alert("Transaksi tidak valid atau token tidak tersedia!");
+            @endif
+        };
     </script>
 </body>
 </html>

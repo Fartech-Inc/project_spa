@@ -124,18 +124,17 @@ class SiteController extends Controller
             $is_login = true;
         }
 
-        // if is_login is true, get user transation data on this service
         $transactions = null;
-        if($is_login){
+        if ($is_login) {
             $transactions = Transaction::where('user_id', $user->id)
-                ->where('service_id', $service->id)
-                ->whereNull('deleted_at')
-                ->get();
+            ->where('service_id', $service->id)
+            ->whereNull('deleted_at')
+            ->get();
         }
-        
+
         $is_consuming = false;
-        // if transaction is not null and count is greater than 0, set is_consuming to true
-        if(!empty($transactions)){
+        // jika transaksi ada dan jumlahnya lebih dari 0, set is_consuming ke true
+        if (!empty($transactions) && $transactions->count() > 0) {
             $is_consuming = true;
         }
 
@@ -245,7 +244,7 @@ class SiteController extends Controller
             "user_id"=> 'required|exists:users,id',
             "service_id" => "required|exists:services,id",
             "total_price" => "required|integer",
-            "transaction_date" => "required|date",
+            "transaction_date" => "required|date|after:today",
             "start_time" => 'required|date_format:H:i',
             "end_time" => 'required|date_format:H:i|after:start_time',
             "payment_type" => 'required|in:full_payment,down_payment',
@@ -395,10 +394,15 @@ class SiteController extends Controller
         // if found, get the code
         $code = $transaction->code;
 
+        // update the transaction status to success
+        $transaction->status = 'success';
+        $transaction->token = null;
+        $transaction->save();
+
         return view("myBookingSuccess", compact("code"));
     }
 
     public function booking_failed(Request $request){
         return view("myBookingFailed");
-    }    
+    }
 }

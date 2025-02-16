@@ -63,12 +63,12 @@
                     <input type="email" placeholder="Write your email" class="w-full px-5 py-3 rounded-full shadow-xl"
                         name="email" id="email" value="{{ old('email') }}">
                 </div>
-                <div class="flex items-center justify-center">
-                    <a href="/login" class="my-5 hover:text-[#F6AFF2] hover:underline transition">Back To Sign</a>
-                </div>
                 <button type="submit"
                     class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl">Send
                     OTP</button>
+                <div class="flex items-center justify-center">
+                    <a href="/login" class="my-5 hover:text-[#F6AFF2] hover:underline transition">Back To Sign</a>
+                </div>
             </form>
         </div>
         {{-- Right Section --}}
