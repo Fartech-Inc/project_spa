@@ -57,21 +57,28 @@ class ForgotPasswordContoller extends Controller
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'otp' => 'required|numeric|digits:6',
+            'otp' => 'required|array|size:6',
+            'otp.*' => 'numeric|digits:1',
         ]);
 
-        // Cari user berdasarkan OTP yang dikirimkan
-        $user = User::where('otp', $request->otp)
-            ->where('otp_expiration', '>', Carbon::now()) // Pastikan OTP belum kadaluarsa
+        // Gabungkan OTP menjadi satu string
+        $otp = implode('', $request->otp);
+
+        // Cari user berdasarkan OTP
+        $user = User::where('otp', $otp)
+            ->where('otp_expiration', '>', Carbon::now())
             ->first();
 
         if ($user) {
-            // Hapus OTP setelah berhasil digunakan
+            // Set email di session
+            session(['reset_email' => $user->email]);
+
+            // Hapus OTP setelah digunakan
             $user->otp = null;
             $user->otp_expiration = null;
             $user->save();
 
-            return redirect()->route('auth.resetPasswordForm')->with('success', 'OTP valid, silakan reset password Anda.');
+            return redirect()->route('auth.newPasswordForm')->with('success', 'OTP valid, silakan reset password Anda.');
         } else {
             return back()->with('error', 'OTP salah atau telah kadaluarsa.');
         }

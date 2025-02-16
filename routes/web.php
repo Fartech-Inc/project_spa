@@ -51,5 +51,5 @@ Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']
 Route::post('/forgot-password/send-otp', [ForgotPasswordContoller::class, 'sendOtp'])->name('auth.sendOtp');
 Route::post('/forgot-password/verify-otp', [ForgotPasswordContoller::class, 'verifyOtp'])->name('auth.verifyOtp');
 
-Route::get('/new-password', [ForgotPasswordContoller::class, 'newPasswordForm'])->name('auth.resetPasswordForm');
-Route::post('/new-password', [ForgotPasswordContoller::class, 'newPassword'])->name('auth.resetPassword');
+Route::get('/new-password', [ForgotPasswordContoller::class, 'newPasswordForm'])->name('auth.newPasswordForm');
+Route::post('/new-password', [ForgotPasswordContoller::class, 'newPassword'])->name('auth.newPassword');
