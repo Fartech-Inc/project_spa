@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
+// Midtrans
+use Midtrans\Snap;
+use Midtrans\Config;
+use Midtrans\Notification;
+
 // Helper
 use App\Helper\InputValidationHelper;
 
@@ -19,7 +24,6 @@ use App\Models\Product;
 use App\Models\Transaction;
 use App\Models\DetailTransaction;
 use App\Models\Testimonial;
-use App\Models\User;
 
 class SiteController extends Controller
 {
@@ -323,6 +327,26 @@ class SiteController extends Controller
             $transaction->start_time = $start_time;
             $transaction->end_time = $end_time;
             $transaction->payment_type = $payment_type;
+            // Midtrans
+            \Midtrans\Config::$serverKey = config('midtrans.serverKey');
+            \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+            \Midtrans\Config::$isSanitized = env('MIDTRANS_IS_SANITIZED');
+            \Midtrans\Config::$is3ds = env('MIDTRANS_IS_3DS');
+
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => rand(),
+                    'gross_amount' => $transaction->total_paid,
+                ),
+                'customer_details' => array(
+                    'first_name' => Auth::user()->name,
+                    'email' => Auth::user()->email,
+                    'phone' => Auth::user()->phone,
+                ),
+            );
+
+            $snapToken = Snap::getSnapToken($params);
+            $transaction->token = $snapToken;
             $transaction->save();
 
             // Create new transaction detail
@@ -340,16 +364,22 @@ class SiteController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('web.booking.success', $transaction->id)
+                ->route('web.payment.process', $transaction->id)
                 ->with('success', 'Booking berhasil');
 
         } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             return redirect()
                 ->back()
                 ->with('error', 'Terjadi kesalahan saat melakukan booking')
                 ->withInput();
         }
+    }
+
+    public function payment_process(Transaction $transaction)
+    {
+        return view('payment', compact('transaction'));
     }
 
     public function booking_success(Request $request, $id){

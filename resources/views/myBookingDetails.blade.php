@@ -153,6 +153,26 @@
     <x-footer></x-footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    <script type="text/javascript">
+        document.getElementById('pay-button').onclick = function(){
+            @if(isset($transaction) && $transaction->token)
+                snap.pay('{{ $transaction->token }}', {
+                onSuccess: function(result){
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                },
+                onPending: function(result){
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                },
+                onError: function(result){
+                    document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+                }
+                });
+            @else
+                alert("Transaksi tidak valid atau token tidak tersedia!");
+            @endif
+        };
+    </script>
     <script>
         $(document).ready(function() {
             let selectedProducts = [];

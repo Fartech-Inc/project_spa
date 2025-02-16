@@ -42,7 +42,14 @@ class ServiceGalleryResource extends Resource
                     ])
                     ->default(false)
                     ->required()
-                    ->hidden(fn(callable $get) => ServiceGallery::where('service_id', $get('service_id'))->where('is_thumbnail', true)->exists()),
+                    ->reactive()
+                    ->disabled(
+                        fn(callable $get, ?ServiceGallery $record) =>
+                        // Cek apakah ada data lain dengan is_thumbnail = true untuk service_id yang sama
+                        $record
+                            ? (!$record->is_thumbnail && ServiceGallery::where('service_id', $record->service_id)->where('is_thumbnail', true)->exists())
+                            : ServiceGallery::where('service_id', $get('service_id'))->where('is_thumbnail', true)->exists()
+                    ),
                 Forms\Components\FileUpload::make('image')
                     ->label('Gambar')
                     ->directory('service-galleries')
@@ -91,5 +98,15 @@ class ServiceGalleryResource extends Resource
             'create' => Pages\CreateServiceGallery::route('/create'),
             'edit' => Pages\EditServiceGallery::route('/{record}/edit'),
         ];
+    }
+
+    public static function mutateFormDataBeforeSave(array $data): array
+    {
+        if ($data['is_thumbnail']) {
+            // Set semua is_thumbnail pada service_id yang sama menjadi false
+            ServiceGallery::where('service_id', $data['service_id'])->update(['is_thumbnail' => false]);
+        }
+
+        return $data;
     }
 }

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->timestamp('transaction_date')->index();
             $table->time('start_time')->index();
             $table->time('end_time')->index();
+            $table->string('token')->index();
             $table->timestamps();
             $table->softDeletes();
         });

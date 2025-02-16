@@ -30,6 +30,7 @@ Route::get('/service/{id}', [SiteController::class, 'service'])->name('web.servi
 Route::group(['middleware' => ['auth:web']], function () {
     Route::get('/booking/{id}', [SiteController::class, 'booking_page'])->name('web.booking.page');
     Route::post('/booking', [SiteController::class, 'booking_process'])->name('web.booking.process');
+    Route::get('/payment/{transaction}', [SiteController::class, 'payment_process'])->name('web.payment.process');
     Route::get('/success/{id}', [SiteController::class, 'booking_success'])->name('web.booking.success');
     Route::get('/failed', [SiteController::class, 'booking_failed'])->name('web.booking.failed');
     Route::post('/testimonial/{id}', [SiteController::class, 'store_testimonial'])->name('web.store.testimonial');

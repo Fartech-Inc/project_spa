@@ -20,6 +20,7 @@ class Transaction extends Model
         "transaction_date",
         "start_time",
         "end_time",
+        "token",
     ];
 
     public function user()

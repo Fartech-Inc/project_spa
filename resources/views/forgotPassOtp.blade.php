@@ -86,9 +86,12 @@
 
                 {{-- NANTI PAKAI YANG BUTTON, <a> hanya untuk test --}}
                 {{-- <button type="submit" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Kirim</button> --}}
-                <a href="/new-password" class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Masuk</a>
+                <a href="/new-password"
+                    class="text-center text-white bg-[#F6AFF2] rounded-full w-full py-3 font-semibold my-3 shadow-xl mb-20">Masuk</a>
 
-                {{-- <a href="{{ route('auth.register') }}" class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create New Account</a> --}}
+                <a href="{{ route('auth.register') }}"
+                    class="text-center text-[#0E1626] bg-white rounded-full w-full py-3 font-semibold my-3 block shadow-xl">Create
+                    New Account</a>
             </form>
         </div>
         {{-- Right Section --}}
