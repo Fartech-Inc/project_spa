@@ -5,12 +5,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JasaController;
 use App\Http\Controllers\DetailsController;
-use App\Http\Controllers\MybookingController;
 
 // Web
-use App\Http\Controllers\Web\ProfileController;
 use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\SiteController;
+use App\Http\Controllers\MybookingController;
+use App\Http\Controllers\Web\ProfileController;
+use App\Http\Controllers\ForgotPasswordContoller;
 
 
 // AUTH
@@ -44,4 +45,7 @@ Route::group(['middleware' => ['auth:web']], function () {
 
 Route::get('/mybooking', [MybookingController::class, 'index']);
 Route::get('/forgot-pass', [ForgotPasswordContoller::class, 'forgotPass']);
-Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp']);
+Route::get('/forgot-pass-otp', [ForgotPasswordContoller::class, 'forgotPassOtp'])->name('auth.forgotPassOtp');
+// Route untuk mengirim OTP
+Route::post('/forgot-password/send-otp', [ForgotPasswordContoller::class, 'sendOtp'])->name('auth.sendOtp');
+Route::post('/forgot-password/verify-otp', [ForgotPasswordContoller::class, 'verifyOtp'])->name('auth.verifyOtp');
