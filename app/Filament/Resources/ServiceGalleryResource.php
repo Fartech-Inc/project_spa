@@ -20,6 +20,10 @@ class ServiceGalleryResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $pluralLabel = 'Service Gallery';
+
+    protected static ?string $navigationGroup = 'Service Management';
+
     public static function form(Form $form): Form
     {
         return $form

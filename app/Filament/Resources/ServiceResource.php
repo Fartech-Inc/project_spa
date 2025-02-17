@@ -19,6 +19,12 @@ class ServiceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $pluralLabel = 'Service';
+
+    protected static ?string $navigationGroup = 'Service Management';
+
+    protected static ?int $navigationSort = -2; // Semakin kecil semakin atas
+
     public static function form(Form $form): Form
     {
         return $form
