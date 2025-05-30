@@ -6,12 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <title>Document</title>
+    <style>
+        .card_failed {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
     <x-navbar></x-navbar>
 
     <div class="flex items-center justify-center gap-8">
-        <div class="bg-white rounded-xl p-20">
+        <div class="bg-white rounded-xl p-20 card_failed">
             <p class="text-4xl font-bold text-center">Booking Failed!</p>
             <p class="mb-10 mt-5">Pemesanan Mu Gagal,Coba Ulangi</p>
             <div class="flex flex-col">

@@ -27,22 +27,46 @@ use App\Models\Testimonial;
 
 class SiteController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
-        // get all service with service galleries where is_thumbnail = true as service image
-        $services = Service::whereNull('deleted_at')
-            ->get();
+        // // get all service with service galleries where is_thumbnail = true as service image
+        // $services = Service::whereNull('deleted_at')
+        //     ->get();
 
-        $service_galleries = ServiceGallery::whereNull('deleted_at')
-            ->where('is_thumbnail', true)
-            ->get();
+        // $service_galleries = ServiceGallery::whereNull('deleted_at')
+        //     ->where('is_thumbnail', true)
+        //     ->get();
 
-        // get service gallery image where is_thumbnail = true and service_id = service_id
-        foreach ($services as $service){
-            foreach ($service_galleries as $service_gallery){
-                if($service->id == $service_gallery->service_id){
-                    $service->image = asset('storage/public/' . $service_gallery->image);
-                }
+        // // get service gallery image where is_thumbnail = true and service_id = service_id
+        // foreach ($services as $service) {
+        //     foreach ($service_galleries as $service_gallery) {
+        //         if ($service->id == $service_gallery->service_id) {
+        //             $service->image = asset('storage/public/' . $service_gallery->image);
+        //         }
+        //     }
+        // }
+
+        // return view("landingPage", compact("services"));
+
+        // // Get all services with their thumbnails
+        // $services = Service::with(['service_galleries' => function ($query) {
+        //     $query->where('is_thumbnail', true);
+        // }])->whereNull('deleted_at')->get();
+
+        // return view("landingPage", compact("services"));
+
+        // Get all services with their galleries
+        $services = Service::with(['service_galleries'])->whereNull('deleted_at')->get();
+
+        // Set thumbnail for each service
+        foreach ($services as $service) {
+            $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
+
+            if ($thumbnail) {
+                $service->thumbnail_url = asset('storage/' . $thumbnail->image_path);
+            } else {
+                $service->thumbnail_url = asset('img/massage.png'); // path ke gambar default
             }
         }
 
@@ -55,7 +79,7 @@ class SiteController extends Controller
         $service_categories = ServiceCategory::with(['services' => function ($query) {
             $query->whereNull('deleted_at');
         }])
-        ->whereNull('deleted_at');
+            ->whereNull('deleted_at');
 
         // Jika ada pencarian, filter layanan berdasarkan nama
         if ($request->has('search')) {
@@ -79,14 +103,15 @@ class SiteController extends Controller
                     ->whereNull('deleted_at')
                     ->first();
 
-                $service->image = $thumbnail ? asset('storage/public/' . $thumbnail->image) : asset('img/massage.png');
+                $service->image = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
             }
         }
 
         return view("jasa", compact("service_categories"));
     }
 
-    public function service($id, Request $request){
+    public function service($id, Request $request)
+    {
         $service = Service::with(['service_galleries'])
             ->where('id', $id)
             ->firstOrFail();
@@ -104,7 +129,7 @@ class SiteController extends Controller
         foreach ($services as $other_service) {
             foreach ($service_galleries as $service_gallery) {
                 if ($other_service->id == $service_gallery->service_id) {
-                    $other_service->image = asset('storage/public/' . $service_gallery->image);
+                    $other_service->image = asset('storage/' . $service_gallery->image);
                 }
             }
         }
@@ -119,7 +144,7 @@ class SiteController extends Controller
 
         // check if user is logged in
         $is_login = false;
-        if(Auth::check()){
+        if (Auth::check()) {
             $user = Auth::user();
             $is_login = true;
         }
@@ -127,9 +152,9 @@ class SiteController extends Controller
         $transactions = null;
         if ($is_login) {
             $transactions = Transaction::where('user_id', $user->id)
-            ->where('service_id', $service->id)
-            ->whereNull('deleted_at')
-            ->get();
+                ->where('service_id', $service->id)
+                ->whereNull('deleted_at')
+                ->get();
         }
 
         $is_consuming = false;
@@ -151,7 +176,7 @@ class SiteController extends Controller
             'rating.required' => 'Rating harus diisi.',
             'rating.integer' => 'Rating harus berupa angka.',
             'rating.min' => 'Rating minimal 1.',
-            'rating.max' => 'Rating maksimal 5.',    
+            'rating.max' => 'Rating maksimal 5.',
             'message.required' => 'Pesan harus diisi.',
             'message.string' => 'Pesan harus berupa teks.',
             'message.max' => 'Pesan maksimal 1000 karakter.',
@@ -166,7 +191,7 @@ class SiteController extends Controller
 
         // DB Transaction
         DB::beginTransaction();
-        try{
+        try {
             if (!Auth::check()) {
                 return redirect()
                     ->back()
@@ -207,16 +232,20 @@ class SiteController extends Controller
             return redirect()
                 ->back()
                 ->with('success', 'Testimonial berhasil dikirim. Terima kasih atas ulasan Anda!');
-
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()
                 ->back()
-                ->with('error', 'Terjadi kesalahan. Silahkan coba lagi.');  
+                ->with('error', 'Terjadi kesalahan. Silahkan coba lagi.');
         }
     }
 
-    public function booking_page(Request $request, $id){
+    public function booking_page(Request $request, $id)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('auth.login');
+        }
+
         $service = Service::where('id', $id)
             ->firstOrFail();
 
@@ -224,7 +253,11 @@ class SiteController extends Controller
             ->where('is_thumbnail', true)
             ->first();
 
-        $service->image = asset('storage/public/' . $service_thumbnail->image);
+        if ($service_thumbnail) {
+            $service->image = asset('storage/' . $service_thumbnail->image);
+        } else {
+            $service->image = asset('img/massage.png');
+        }
 
         $products = Product::with(['product_category'])
             ->whereNull('deleted_at')
@@ -238,10 +271,11 @@ class SiteController extends Controller
         return view("myBookingDetails", compact("service", "products", "user", "code"));
     }
 
-    public function booking_process(Request $request){
+    public function booking_process(Request $request)
+    {
         $validation = [
             "code" => "required|string",
-            "user_id"=> 'required|exists:users,id',
+            "user_id" => 'required|exists:users,id',
             "service_id" => "required|exists:services,id",
             "total_price" => "required|integer",
             "transaction_date" => "required|date|after:today",
@@ -260,13 +294,13 @@ class SiteController extends Controller
         ];
         $names = [
             'code' => 'Code',
-            'user_id'=> 'User',
+            'user_id' => 'User',
             'service_id' => 'Service',
-            'total_price'=> 'Total Price',
-            'transaction_date'=> 'Transaction Date',
-            'start_time'=> 'Start Time',
-            'end_time'=> 'End Time',
-            'payment_type'=> 'Payment Type',
+            'total_price' => 'Total Price',
+            'transaction_date' => 'Transaction Date',
+            'start_time' => 'Start Time',
+            'end_time' => 'End Time',
+            'payment_type' => 'Payment Type',
         ];
         $validator = Validator::make($request->all(), $validation, $message, $names);
         if ($validator->fails()) {
@@ -281,7 +315,7 @@ class SiteController extends Controller
         try {
 
             $transation_date = InputValidationHelper::validate_input_text($request->transaction_date);
-            if(!$transation_date){
+            if (!$transation_date) {
                 return redirect()
                     ->back()
                     ->with('error', 'Tanggal transaksi tidak valid')
@@ -289,7 +323,7 @@ class SiteController extends Controller
             }
 
             $start_time = InputValidationHelper::validate_input_text($request->start_time);
-            if(!$start_time){
+            if (!$start_time) {
                 return redirect()
                     ->back()
                     ->with('error', 'Waktu mulai tidak valid')
@@ -297,7 +331,7 @@ class SiteController extends Controller
             }
 
             $end_time = InputValidationHelper::validate_input_text($request->end_time);
-            if(!$end_time){
+            if (!$end_time) {
                 return redirect()
                     ->back()
                     ->with('error', 'Waktu selesai tidak valid')
@@ -305,7 +339,7 @@ class SiteController extends Controller
             }
 
             $payment_type = InputValidationHelper::validate_input_text($request->payment_type);
-            if(!$payment_type){
+            if (!$payment_type) {
                 return redirect()
                     ->back()
                     ->with('error', 'Jenis pembayaran tidak valid')
@@ -349,7 +383,7 @@ class SiteController extends Controller
             $transaction->save();
 
             // Create new transaction detail
-            if($request->product_id ){
+            if ($request->product_id) {
                 foreach ($request->product_id as $product_id) {
                     $detail = new DetailTransaction();
                     $detail->transaction_id = $transaction->id;
@@ -365,7 +399,6 @@ class SiteController extends Controller
             return redirect()
                 ->route('web.payment.process', $transaction->id)
                 ->with('success', 'Booking berhasil');
-
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -381,11 +414,12 @@ class SiteController extends Controller
         return view('payment', compact('transaction'));
     }
 
-    public function booking_success(Request $request, $id){
+    public function booking_success(Request $request, $id)
+    {
         // get transaction where id = $id
         $transaction = Transaction::find($id);
 
-        if(!$transaction){
+        if (!$transaction) {
             return redirect()
                 ->back()
                 ->with('error', 'Transaksi tidak ditemukan');
@@ -402,7 +436,8 @@ class SiteController extends Controller
         return view("myBookingSuccess", compact("code"));
     }
 
-    public function booking_failed(Request $request){
+    public function booking_failed(Request $request)
+    {
         return view("myBookingFailed");
     }
 }

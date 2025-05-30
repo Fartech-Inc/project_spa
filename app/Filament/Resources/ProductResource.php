@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ProductResource extends Resource
 {
@@ -37,19 +39,20 @@ class ProductResource extends Resource
                 Forms\Components\TextInput::make('price')
                     ->label('Price')
                     ->required(),
-                Forms\Components\TextInput::make('description')
-                    ->label('Description')
-                    ->required(),
+                // Forms\Components\TextInput::make('description')
+                //     ->label('Description')
+                //     ->required(),
                 Forms\Components\TextInput::make('stock')
                     ->label('Stock')
                     ->required(),
-                Forms\Components\TextInput::make('weight')
-                    ->label('Weight')
-                    ->required(),
+                // Forms\Components\TextInput::make('weight')
+                //     ->label('Weight')
+                //     ->required(),
                 Forms\Components\FileUpload::make('image')
-                    ->label('Image')
-                    ->directory('products')
-                    ->required(),
+    ->disk('public')
+    ->directory('products')
+    ->visibility('public'),
+
             ]);
     }
 
@@ -65,14 +68,17 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->label('Price'),
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Description'),
+                // Tables\Columns\TextColumn::make('description')
+                //     ->label('Description'),
                 Tables\Columns\TextColumn::make('stock')
                     ->label('Stock'),
-                Tables\Columns\TextColumn::make('weight')
-                    ->label('Weight'),
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Image'),
+                // Tables\Columns\TextColumn::make('weight')
+                //     ->label('Weight'),
+              Tables\Columns\ImageColumn::make('image')
+    ->label('Image')
+    ->disk('public')
+    ->visibility('public')
+    ->url(fn ($record) => str_replace('storage/public/', 'storage/', Storage::disk('public')->url($record->image))),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Created At'),
             ])

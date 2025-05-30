@@ -23,11 +23,35 @@
             }
         }
     </script>
+    <style>
+@media (max-width: 768px) {
+    
+    
+    .login_ctr {
+        display: block;
+    }
+    
+    .login_ctr .left_side {
+        width: 100%;
+        height: 100vh;
+    }
+    
+    .login_ctr .right_side {
+        display: none;
+    }
+    
+    .form_login {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+  
+}
+</style>
 </head>
 <body>
-    <div class="flex h-screen">
+    <div class="flex h-screen login_ctr">
         {{-- Left Section --}}
-        <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center">
+        <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center left_side">
             <div class="ml-20 flex items-center">
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
@@ -54,7 +78,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('auth.login.process') }}" method="POST" class="mx-20">
+            <form action="{{ route('auth.login.process') }}" method="POST" class="mx-20 form_login">
                 @csrf
                 <div>
                     <p class="text-[#10062B]">Email Address</p>
@@ -78,7 +102,7 @@
             </form>
         </div>
         {{-- Right Section --}}
-        <div class="w-1/2 bg-cover bg-center relative" style="background-image: url('img/bg-login.png');">
+        <div class="w-1/2 bg-cover bg-center relative right_side" style="background-image: url('img/bg-login.png');">
             <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#F6AFF2] to-transparent p-10">
                 <p class="text-2xl font-semibold text-white mb-4">Spa yang menghadirkan pengalaman relaksasi terbaik dengan layanan profesional dan bahan alami berkualitas.</p>
                 {{-- <p class="text-sm text-white">Shayna Max</p>

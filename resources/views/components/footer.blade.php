@@ -1,5 +1,5 @@
-<div class="mt-20">
-    <div class="flex justify-around">
+<div class="mt-20 ml-5">
+    <div class="md:flex justify-around">
         <div>
             <img src="img/logo.png" alt="logo" class="w-24">
         </div>

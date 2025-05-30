@@ -27,23 +27,22 @@ class TestimonialResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('service_id')
+                Forms\Components\Select::make('service_id')
                     ->relationship('service', 'name')
                     ->label('Service')
                     ->required()
                     ->disabled(),
-                Forms\Components\TextInput::make('transaction_id')
+                Forms\Components\Select::make('transaction_id')
                     ->relationship('transaction', 'code')
                     ->label('Transaction')
                     ->required()
                     ->disabled(),
-                Forms\Components\Select::make('customer_id')
-                    ->relationship('customer', 'name')
+                Forms\Components\Select::make('user_id')
+                    ->relationship('user', 'name')
                     ->label('Nama')
                     ->disabled(),
-                Forms\Components\TextArea::make('message')
+                Forms\Components\Textarea::make('message')
                     ->label('Message')
-                    ->email()
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('rating')
@@ -64,7 +63,7 @@ class TestimonialResource extends Resource
                 Tables\Columns\TextColumn::make('transaction.code')
                     ->label('Transaction')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')->label('Nama')->searchable(),
+                Tables\Columns\TextColumn::make('user.name')->label('Nama')->searchable(),
                 Tables\Columns\TextColumn::make('message')->label('Message'),
                 Tables\Columns\TextColumn::make('rating')->label('Rating'),
                 Tables\Columns\TextColumn::make('created_at')->label('Tanggal Dibuat')->sortable(),
