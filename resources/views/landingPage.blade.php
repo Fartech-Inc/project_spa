@@ -51,13 +51,14 @@
             }
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
     <div class="flex justify-between items-center mx-14 my-5 py-4 px-3 rounded-xl bg-white">
         <a class="flex items-center gap-3" href="/">
             <img src="img/logo.png" alt="logo" class="logo_img">
-            <h1 class="font-bold text-2xl text-[#10062B] pijat_logo">Pijatsdlfsadlfkjsldkj;f;salkdjf;aslkjdf</h1>
+            <h1 class="font-bold text-2xl text-[#10062B] pijat_logo">Pijat</h1>
         </a>
         <div class="flex gap-5 text-[#10062B] nav_right">
             <!--<a href="/">Home</a>-->
@@ -89,8 +90,8 @@
             @endif
         </div>
     </div>
-    <header>
-        <div class="bg-white rounded-full py-4 px-4 flex items-center justify-center gap-3 w-max text-[#10062B] my-16 ml-5">
+    <header class="bg-red-500 w-full py-32">
+        <div class="bg-white rounded-full py-4 px-4 flex items-center justify-center gap-3 w-max text-[#10062B] my-16 container">
             <x-iconsax-bro-crown class="w-5 h-5" />
             <p class="title_benefits">Tempat Pijat Dengan Service Yang Murah</p>
         </div>
