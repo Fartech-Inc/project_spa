@@ -9,6 +9,7 @@
 </head>
 <body>
     <x-navbar></x-navbar>
+    
     <p class="text-4xl font-bold mx-14">Booking Kamu</p>
     <!-- Flash Message untuk Success & Error -->
     @if(session('success'))

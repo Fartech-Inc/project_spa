@@ -9,6 +9,7 @@
 </head>
 <body>
     <x-navbar></x-navbar>
+    
     <div class="flex items-center mx-14 gap-5 mt-20">
         <div class="bg-white rounded-lg border p-5">
             <img id="profile-image" src="{{ $user->image ? $user->image : 'img/massage.png' }}" alt="Profile Image">

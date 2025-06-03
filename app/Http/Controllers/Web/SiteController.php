@@ -29,33 +29,6 @@ class SiteController extends Controller
 {
     public function index(Request $request)
     {
-
-        // // get all service with service galleries where is_thumbnail = true as service image
-        // $services = Service::whereNull('deleted_at')
-        //     ->get();
-
-        // $service_galleries = ServiceGallery::whereNull('deleted_at')
-        //     ->where('is_thumbnail', true)
-        //     ->get();
-
-        // // get service gallery image where is_thumbnail = true and service_id = service_id
-        // foreach ($services as $service) {
-        //     foreach ($service_galleries as $service_gallery) {
-        //         if ($service->id == $service_gallery->service_id) {
-        //             $service->image = asset('storage/public/' . $service_gallery->image);
-        //         }
-        //     }
-        // }
-
-        // return view("landingPage", compact("services"));
-
-        // // Get all services with their thumbnails
-        // $services = Service::with(['service_galleries' => function ($query) {
-        //     $query->where('is_thumbnail', true);
-        // }])->whereNull('deleted_at')->get();
-
-        // return view("landingPage", compact("services"));
-
         // Get all services with their galleries
         $services = Service::with(['service_galleries'])->whereNull('deleted_at')->get();
 
@@ -158,12 +131,21 @@ class SiteController extends Controller
         }
 
         $is_consuming = false;
-        // jika transaksi ada dan jumlahnya lebih dari 0, set is_consuming ke true
-        if (!empty($transactions) && $transactions->count() > 0) {
+        // Set is_consuming ke true jika ada transaksi dengan status success
+        if (!empty($transactions) && $transactions->where('status', 'success')->count() > 0) {
             $is_consuming = true;
         }
 
-        return view("details", compact("service", "services", "testimonials", "averageRating", "is_login", "is_consuming"));
+        $is_already_testimonial = false;
+        // Check if user has already given a testimonial for this service
+        if ($is_login) {
+            $is_already_testimonial = Testimonial::where('user_id', $user->id)
+                ->where('service_id', $service->id)
+                ->whereNull('deleted_at')
+                ->exists();
+        }
+
+        return view("details", compact("service", "services", "testimonials", "averageRating", "is_login", "is_consuming", "is_already_testimonial"));
     }
 
     public function store_testimonial(Request $request, $id)

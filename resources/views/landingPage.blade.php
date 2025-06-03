@@ -55,43 +55,11 @@
 </head>
 
 <body>
-    <div class="flex justify-between items-center mx-14 my-5 py-4 px-3 rounded-xl bg-white">
-        <a class="flex items-center gap-3" href="/">
-            <img src="img/logo.png" alt="logo" class="logo_img">
-            <h1 class="font-bold text-2xl text-[#10062B] pijat_logo">Pijat</h1>
-        </a>
-        <div class="flex gap-5 text-[#10062B] nav_right">
-            <!--<a href="/">Home</a>-->
-            <a href="{{ route('web.services') }}">Jasa</a>
-            {{-- <a href="">Testimonials</a> --}}
-        </div>
-        <div class="flex items-center gap-3 relative">
-            @if (Auth::user())
-            <a class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4" href="{{ route('user.profile.my_transactions') }}">
-                {{-- <x-fluentui-book-add-20-o /> --}}
-                <p>My Booking</p>
-            </a>
-            <!-- Dropdown Toggle -->
-            <div class="relative">
-                <button onclick="toggleDropdown()" class="border border-[#10062B] rounded-full py-3 px-4 flex items-center gap-2" id="dropdownButton">
-                    {{ Auth::user()->name }}
-                </button>
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 bg-white border rounded-lg shadow-lg w-48 z-50">
-                    <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                    <form action="{{ route('auth.logout') }}" method="POST" class="block">
-                        @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                    </form>
-                </div>
-            </div>
-            @else
-            <a class="border border-[#10062B] rounded-full py-3 px-4" href="{{ route('auth.login') }}">Masuk</a>
-            @endif
-        </div>
-    </div>
+    <x-navbar></x-navbar>
+
     <header class="bg-red-500 w-full py-32">
-        <div class="bg-white rounded-full py-4 px-4 flex items-center justify-center gap-3 w-max text-[#10062B] my-16 container">
+        <div
+            class="bg-white rounded-full py-4 px-4 flex items-center justify-center gap-3 w-max text-[#10062B] my-16 container">
             <x-iconsax-bro-crown class="w-5 h-5" />
             <p class="title_benefits">Tempat Pijat Dengan Service Yang Murah</p>
         </div>
@@ -116,33 +84,34 @@
             </a> --}}
             <div class="flex gap-4 mx-14 overflow-x-auto pb-5 card_services_home">
                 <!-- @foreach ($services as $service)
-                <a href="{{ route('web.service', ['id' => $service->id]) }}">
+<a href="{{ route('web.service', ['id' => $service->id]) }}">
                     <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56" style="background-image: url('{{ $service['image'] }}'); background-size: cover; background-position: center;">
                         <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service['name'] }}</p>
                     </div>
                 </a>
-                @endforeach -->
+@endforeach -->
                 <!-- @foreach ($services as $service)
-                @if ($service->service_galleries->isNotEmpty())
-                <a href="{{ route('web.service', ['id' => $service->id]) }}">
+@if ($service->service_galleries->isNotEmpty())
+<a href="{{ route('web.service', ['id' => $service->id]) }}">
                     <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
                         style="background-image: url('{{ asset('storage/' . $service->service_galleries->first()->image) }}');">
                         <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service->name }}</p>
                     </div>
                 </a>
-                @endif
-                @endforeach -->
+@endif
+@endforeach -->
                 @foreach ($services as $service)
-                <a href="{{ route('web.service', ['id' => $service->id]) }}">
-                    @php
-                    $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
-                    $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
-                    @endphp
-                    <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
-                        style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
-                        <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service->name }}</p>
-                    </div>
-                </a>
+                    <a href="{{ route('web.service', ['id' => $service->id]) }}">
+                        @php
+                            $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
+                            $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
+                        @endphp
+                        <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
+                            style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
+                            <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">
+                                {{ $service->name }}</p>
+                        </div>
+                    </a>
                 @endforeach
             </div>
         </div>
@@ -153,12 +122,14 @@
                 <div class="text-center">
                     <img src="img/massage-icons.png" alt="icons" class="m-auto">
                     <p class="text-2xl text-[#3E443A] py-5">Terapis Berpengalaman</p>
-                    <p class="text-[#3E443A]">Kami menyediakan terapis pria dan wanita yang berpengalaman dan bersertifikat</p>
+                    <p class="text-[#3E443A]">Kami menyediakan terapis pria dan wanita yang berpengalaman dan
+                        bersertifikat</p>
                 </div>
                 <div class="text-center">
                     <img src="img/thumbs-up-icons.png" alt="icons" class="m-auto">
                     <p class="text-2xl text-[#3E443A] py-5">Bersih & Higienis</p>
-                    <p class="text-[#3E443A]">Semua terapis dalam keadaan sehat dan juga menerapkan protokol kesehatan</p>
+                    <p class="text-[#3E443A]">Semua terapis dalam keadaan sehat dan juga menerapkan protokol kesehatan
+                    </p>
                 </div>
                 <div class="text-center">
                     <img src="img/best-price-icons.png" alt="icons" class="m-auto">
@@ -167,7 +138,8 @@
                 </div>
             </div>
         </div>
-        <div class="bg-cover bg-center h-72 flex items-center justify-center" style="background-image: url('img/bg-main1.png');">
+        <div class="bg-cover bg-center h-72 flex items-center justify-center"
+            style="background-image: url('img/bg-main1.png');">
             <p class="text-white text-4xl font-bold text-center">
                 Jam Kerja<br>Setiap Hari<br>(08:00 - 23:00 WIB)
             </p>
@@ -181,7 +153,10 @@
             <div class="">
                 <p class="font-bold text-4xl">About Us</p>
                 <p class="font-bold text-2xl my-3">Perawatan Tubuh & Pikiran yang Anda Butuhkan</p>
-                <p class="text-xl leading-loose">Pijat adalah spa yang menghadirkan pengalaman relaksasi terbaik dengan layanan profesional dan bahan alami berkualitas. Kami menawarkan berbagai perawatan, mulai dari pijat tradisional hingga perawatan tubuh dan wajah, untuk membantu Anda merasa lebih segar dan tenang. Temukan kenyamanan dan kedamaian bersama kami di Pijat.</p>
+                <p class="text-xl leading-loose">Pijat adalah spa yang menghadirkan pengalaman relaksasi terbaik dengan
+                    layanan profesional dan bahan alami berkualitas. Kami menawarkan berbagai perawatan, mulai dari
+                    pijat tradisional hingga perawatan tubuh dan wajah, untuk membantu Anda merasa lebih segar dan
+                    tenang. Temukan kenyamanan dan kedamaian bersama kami di Pijat.</p>
             </div>
             <img src="img/bg-main3.png" alt="bg" class="w-96">
         </div>

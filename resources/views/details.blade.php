@@ -79,94 +79,57 @@
 </head>
 
 <body>
-    <div class="flex justify-between items-center mx-14 my-5 py-4 px-3 rounded-xl bg-white">
-        <a class="flex items-center gap-3" href="/">
-            <img src="img/logo.png" alt="logo" class="logo_img">
-            <h1 class="font-bold text-2xl text-[#10062B] pijat_logo">Pijat</h1>
-        </a>
-        <div class="flex gap-5 text-[#10062B] nav_right">
-            <!--<a href="/">Home</a>-->
-            <a href="{{ route('web.services') }}">Jasa</a>
-            {{-- <a href="">Testimonials</a> --}}
-        </div>
-        <div class="flex items-center gap-3 relative">
-            @if (Auth::user())
-            <a class="flex items-center gap-3 rounded-full bg-[#10062B] text-white py-3 px-4" href="{{ route('user.profile.my_transactions') }}">
-                {{-- <x-fluentui-book-add-20-o /> --}}
-                <p>My Booking</p>
-            </a>
-            <!-- Dropdown Toggle -->
-            <div class="relative">
-                <button onclick="toggleDropdown()" class="border border-[#10062B] rounded-full py-3 px-4 flex items-center gap-2" id="dropdownButton">
-                    {{ Auth::user()->name }}
-                </button>
-                <!-- Dropdown Menu -->
-                <div id="dropdownMenu" class="hidden absolute right-0 mt-2 bg-white border rounded-lg shadow-lg w-48 z-50">
-                    <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                    <form action="{{ route('auth.logout') }}" method="POST" class="block">
-                        @csrf
-                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                    </form>
-                </div>
-            </div>
-            @else
-            <a class="border border-[#10062B] rounded-full py-3 px-4" href="{{ route('auth.login') }}">Masuk</a>
-            @endif
-        </div>
-    </div>
-    @if ($errors->any())
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mx-36 my-5" role="alert">
-        <strong class="font-bold">Terjadi Kesalahan!</strong>
-        <ul class="mt-2">
-            @foreach ($errors->all() as $error)
-            <li class="text-sm">{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
+    <x-navbar></x-navbar>
+
     <div class="flex items-center justify-between mx-14">
         <p class="text-[#10062B] text-3xl font-bold">{{ $service->name }}</p>
         <div class="flex items-center gap-2">
             <p>({{ $testimonials->count() }})</p>
             <div class="flex">
                 @for ($i = 1; $i <= 5; $i++)
-                    @if ($i <=floor($averageRating))
-                    <!-- Bintang penuh -->
-                    <svg class="star full" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                    </svg>
+                    @if ($i <= floor($averageRating))
+                        <!-- Bintang penuh -->
+                        <svg class="star full" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
+                            </path>
+                        </svg>
                     @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) >= 0.5)
-                    <!-- Setengah bintang -->
-                    <svg class="star half" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="halfGradient">
-                                <stop offset="50%" stop-color="gold" />
-                                <stop offset="50%" stop-color="gray" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                    </svg>
+                        <!-- Setengah bintang -->
+                        <svg class="star half" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="halfGradient">
+                                    <stop offset="50%" stop-color="gold" />
+                                    <stop offset="50%" stop-color="gray" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
+                            </path>
+                        </svg>
                     @else
-                    <!-- Bintang abu-abu -->
-                    <svg class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                    </svg>
+                        <!-- Bintang abu-abu -->
+                        <svg class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
+                            </path>
+                        </svg>
                     @endif
-                    @endfor
+                @endfor
             </div>
             <p class="ml-2">{{ number_format($averageRating, 1) }}/5</p>
         </div>
     </div>
     <div class="grid grid-cols-3 w-max gap-10 mx-14 mt-10">
         <!-- @foreach ($service->service_galleries as $item)
-            <div class="bg-white w-52 px-5 py-5 rounded-xl border">
+<div class="bg-white w-52 px-5 py-5 rounded-xl border">
                 <img src="{{ asset('storage/public/' . $item->image) }}" alt="img">
             </div>
-        @endforeach -->
+@endforeach -->
         @foreach ($service->service_galleries as $item)
-        <div class="bg-white w-52 px-5 py-5 rounded-xl border">
-            <img src="{{ asset('storage/' . $item->image) }}" alt="img">
-        </div>
+            <div class="bg-white w-52 px-5 py-5 rounded-xl border">
+                <img src="{{ asset('storage/' . $item->image) }}" alt="img">
+            </div>
         @endforeach
     </div>
     <div class="flex items-center gap-10 justify-center my-7 benefits_ctr">
@@ -198,51 +161,62 @@
             <p class="font-semibold">Real Testimonials</p>
             <div class="grid grid-cols-2 gap-3">
                 @foreach ($testimonials as $testimonial)
-                <div class="bg-white border border-gray-400 w-56 p-3 rounded-xl">
-                    <div class="flex gap-1 mb-2">
-                        @for ($i = 1; $i <= 5; $i++)
-                            <svg class="star {{ $i <= $testimonial->rating ? 'active' : '' }}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                            </svg>
+                    <div class="bg-white border border-gray-400 w-56 p-3 rounded-xl">
+                        <div class="flex gap-1 mb-2">
+                            @for ($i = 1; $i <= 5; $i++)
+                                <svg class="star {{ $i <= $testimonial->rating ? 'active' : '' }}" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
+                                    </path>
+                                </svg>
                             @endfor
-                    </div>
-                    <p>{{ $testimonial->message }}</p>
-                    <div class="flex items-center gap-3 my-2">
-                        <img src="{{ asset($testimonial->user->image) }}" alt="pp" class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <p class="text-sm font-semibold">{{ $testimonial->user->name }}</p>
-                            <p class="text-sm">{{ $testimonial->created_at }}</p>
+                        </div>
+                        <p>{{ $testimonial->message }}</p>
+                        <div class="flex items-center gap-3 my-2">
+                            <img src="{{ asset($testimonial->user->image) }}" alt="pp"
+                                class="w-10 h-10 rounded-full object-cover">
+                            <div>
+                                <p class="text-sm font-semibold">{{ $testimonial->user->name }}</p>
+                                <p class="text-sm">{{ $testimonial->created_at }}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
-            @if ($is_login === true && $is_consuming === true)
-            <div class="flex items-center gap-5 my-5">
-                <!-- <img src="{{ asset(Auth::user()->image) }}" alt="img pp" class="w-10 h-10 rounded-full object-cover"> -->
-                @php
-                $userImage = Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('img/user_default.png');
-                @endphp
-                <img src="{{ $userImage }}" alt="img pp" class="w-10 h-10 rounded-full object-cover">
+            @if ($is_login === true && $is_consuming === true && !$is_already_testimonial)
+                <div class="flex items-center gap-5 my-5">
+                    <!-- <img src="{{ asset(Auth::user()->image) }}" alt="img pp" class="w-10 h-10 rounded-full object-cover"> -->
+                    @php
+                        $userImage = Auth::user()->image
+                            ? asset('storage/' . Auth::user()->image)
+                            : asset('img/user_default.png');
+                    @endphp
+                    <img src="{{ $userImage }}" alt="img pp" class="w-10 h-10 rounded-full object-cover">
 
-                <div class="border bg-white rounded-2xl p-5 w-full">
-                    <form action="{{ route('web.store.testimonial', $service->id) }}" method="POST">
-                        @csrf
-                        <div id="rating" class="flex">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <label class="cursor-pointer">
-                                <input type="radio" name="rating" class="hidden" value="{{ $i }}">
-                                <svg data-value="{{ $i }}" class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z"></path>
-                                </svg>
-                                </label>
+                    <div class="border bg-white rounded-2xl p-5 w-full">
+                        <form action="{{ route('web.store.testimonial', $service->id) }}" method="POST">
+                            @csrf
+                            <div id="rating" class="flex">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <label class="cursor-pointer">
+                                        <input type="radio" name="rating" class="hidden"
+                                            value="{{ $i }}">
+                                        <svg data-value="{{ $i }}" class="star" viewBox="0 0 20 20"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
+                                            </path>
+                                        </svg>
+                                    </label>
                                 @endfor
-                        </div>
-                        <textarea name="message" class="w-full mt-3 border rounded-lg px-2 py-3" placeholder="Tambahkan Komentar..." required></textarea>
-                        <button type="submit" class="bg-[#FF48B6] px-5 py-2 mt-3 text-white rounded-lg">Kirim Testimonial</button>
-                    </form>
+                            </div>
+                            <textarea name="message" class="w-full mt-3 border rounded-lg px-2 py-3" placeholder="Tambahkan Komentar..." required></textarea>
+                            <button type="submit" class="bg-[#FF48B6] px-5 py-2 mt-3 text-white rounded-lg">Kirim
+                                Testimonial</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
             @endif
         </div>
         <div class="flex flex-col gap-4 bg-white rounded-2xl border border-gray-300 w-max p-5 book_now_ctr">
@@ -266,7 +240,8 @@
                 <p class="font-semibold">Layanan profesional oleh terapis berpengalaman.</p>
             </div>
             <div class="book_btn_ctr">
-                <a href="{{ route('web.booking.page', $service->id) }}" class="w-full text-center text-white block bg-[#FF48B6] px-10 py-3 m-auto rounded-full book_btn">Booking</a>
+                <a href="{{ route('web.booking.page', $service->id) }}"
+                    class="w-full text-center text-white block bg-[#FF48B6] px-10 py-3 m-auto rounded-full book_btn">Booking</a>
             </div>
         </div>
     </div>
@@ -277,38 +252,42 @@
         </div>
         <div class="flex gap-4 mx-14 overflow-x-auto pb-5">
             @foreach ($services as $service)
-            <a href="{{ route('web.service', ['id' => $service->id]) }}">
-                @php
-                $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
-                $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
-                @endphp
-                <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
-                    style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
-                    <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">{{ $service->name }}</p>
-                </div>
-            </a>
+                <a href="{{ route('web.service', ['id' => $service->id]) }}">
+                    @php
+                        $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
+                        $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
+                    @endphp
+                    <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
+                        style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
+                        <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">
+                            {{ $service->name }}</p>
+                    </div>
+                </a>
             @endforeach
         </div>
     </div>
     <x-footer></x-footer>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const stars = document.querySelectorAll('.star');
-            const inputs = document.querySelectorAll('input[name="rating"]');
+            const ratingContainer = document.getElementById('rating');
+            const stars = ratingContainer.querySelectorAll('svg.star');
+            const inputs = ratingContainer.querySelectorAll('input[name="rating"]');
 
             stars.forEach((star, index) => {
                 star.addEventListener('click', () => {
-                    console.log(`Bintang ke-${index + 1} diklik`); // Debugging
+                    console.log(`Bintang ke-${index + 1} diklik`);
 
-                    // Set input radio yang sesuai
-                    inputs[index].checked = true;
+                    // Pastikan input tersedia
+                    if (inputs[index]) {
+                        inputs[index].checked = true;
 
-                    // Reset semua bintang ke abu-abu
-                    stars.forEach(s => s.classList.remove('active'));
+                        // Reset semua bintang ke abu-abu
+                        stars.forEach(s => s.classList.remove('active'));
 
-                    // Beri warna emas pada bintang yang dipilih dan sebelumnya
-                    for (let i = 0; i <= index; i++) {
-                        stars[i].classList.add('active');
+                        // Aktifkan bintang sesuai index
+                        for (let i = 0; i <= index; i++) {
+                            stars[i].classList.add('active');
+                        }
                     }
                 });
             });
