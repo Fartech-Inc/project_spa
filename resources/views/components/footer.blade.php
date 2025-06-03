@@ -1,38 +1,40 @@
-<div class="mt-20 ml-5">
-    <div class="md:flex justify-around">
+<footer class="bg-white mt-20 px-4 py-10">
+    <div class="container mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-sm text-[#0A142F]">
         <div>
-            <img src="img/logo.png" alt="logo" class="w-24">
+            <img src="{{ asset('img/logo.png') }}" alt="logo" class="mb-3 w-25" />
         </div>
-        <div class="">
-            <p class="text-[#0A142F] font-bold mb-3">Learn more</p>
-            <ul>
-                <li><a href="">Tentang Spa</a></li>
-                <li><a href="">Kebijakan Privasi</a></li>
-                <li><a href="">Lingkungan (Opsional jika terkait eco-friendly spa)</a></li>
-                <li><a href="">Hubungi Kami</a></li>
-            </ul>
-        </div>
-        <div class="">
-            <p class="text-[#0A142F] font-bold mb-3">Tickets & Booking</p>
-            <ul>
-                <li><a href="">Booking Online</a></li>
-                <li><a href="">Paket Spa</a></li> 
-            </ul>
-        </div>
-        <div class="">
-            <p class="text-[#0A142F] font-bold mb-3">Contact Us</p>
-            <ul>
-                <li><a href="">Spa Reservation: <span class="text-[#0A142F] font-semibold">123-456-7890</span></a></li>
-                <li><a href="">Paket Spa: <span class="text-[#0A142F] font-semibold">123-456-7890</span></a></li> 
+        <div>
+            <p class="font-bold mb-2">Learn More</p>
+            <ul class="space-y-1">
+                <li><a href="#">Tentang Spa</a></li>
+                <li><a href="#">Kebijakan Privasi</a></li>
+                <li><a href="#">Lingkungan</a></li>
+                <li><a href="#">Hubungi Kami</a></li>
             </ul>
         </div>
         <div>
-            <p class="text-[#0A142F] font-bold mb-3">Social</p>
-            <div>
-                <a href=""><x-iconsax-bol-instagram class="w-5"/></a>
+            <p class="font-bold mb-2">Tickets & Booking</p>
+            <ul class="space-y-1">
+                <li><a href="#">Booking Online</a></li>
+                <li><a href="#">Paket Spa</a></li>
+            </ul>
+        </div>
+        <div>
+            <p class="font-bold mb-2">Contact Us</p>
+            <ul class="space-y-1">
+                <li>Spa Reservation: <span class="font-semibold">123-456-7890</span></li>
+                <li>Paket Spa: <span class="font-semibold">123-456-7890</span></li>
+            </ul>
+        </div>
+        <div>
+            <p class="font-bold mb-2">Social</p>
+            <div class="flex gap-6 text-xl">
+                <x-iconsax-bol-instagram class="w-5" />
+                {{-- Tambahkan icon lainnya di sini jika ada --}}
             </div>
         </div>
     </div>
-    <hr class="my-10 mx-14">
-    <p class="text-center text-[#0A142F] pb-10">© 2024 Pijat| All Rights Reserved</p>
-</div>
+    <p class="text-center text-xs text-gray-400 mt-10">
+        © 2024 Pijat | All Rights Reserved
+    </p>
+</footer>
