@@ -12,29 +12,20 @@
             width: 24px;
             height: 24px;
             fill: gray;
-            /* Default warna abu-abu */
             cursor: pointer;
             transition: fill 0.2s ease-in-out;
         }
 
-        .star.active {
-            fill: gold;
-            /* Warna bintang aktif */
-        }
-
+        .star.active,
         .star.full {
             fill: gold;
-            /* Warna bintang penuh */
         }
 
         .star.half {
             fill: url(#halfGradient);
-            /* Warna setengah bintang */
         }
 
         @media (max-width: 768px) {
-
-
             .benefits_ctr {
                 flex-direction: column;
             }
@@ -42,7 +33,6 @@
             .about_product_ctr {
                 margin-left: 10px;
                 margin-right: 10px;
-
                 flex-direction: column;
             }
 
@@ -51,248 +41,123 @@
                 width: 100%;
             }
 
-
             .book_btn {
                 width: 100%;
                 color: white;
                 display: block;
                 text-align: center;
             }
-
-            .logo_img {
-                width: 28px;
-            }
-
-            .pijat_logo {
-                font-family: Poppins;
-                font-weight: 800;
-                font-size: 12px;
-                line-height: 100%;
-                letter-spacing: 0%;
-            }
-
-            .nav_right a {
-                font-size: 12px;
-            }
         }
     </style>
 </head>
 
-<body>
+<body class="bg-gradient-to-b from-[#EB85FF] via-[#FED1E7] via-10% to-white to-25% font-sans">
     <x-navbar></x-navbar>
 
-    <div class="flex items-center justify-between mx-14">
-        <p class="text-[#10062B] text-3xl font-bold">{{ $service->name }}</p>
-        <div class="flex items-center gap-2">
-            <p>({{ $testimonials->count() }})</p>
-            <div class="flex">
-                @for ($i = 1; $i <= 5; $i++)
-                    @if ($i <= floor($averageRating))
-                        <!-- Bintang penuh -->
-                        <svg class="star full" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
-                            </path>
-                        </svg>
-                    @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) >= 0.5)
-                        <!-- Setengah bintang -->
-                        <svg class="star half" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="halfGradient">
-                                    <stop offset="50%" stop-color="gold" />
-                                    <stop offset="50%" stop-color="gray" />
-                                </linearGradient>
-                            </defs>
-                            <path
-                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
-                            </path>
-                        </svg>
-                    @else
-                        <!-- Bintang abu-abu -->
-                        <svg class="star" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
-                            </path>
-                        </svg>
-                    @endif
-                @endfor
+    <main class="pt-40 container mx-auto">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 mx-4 md:mx-0">
+            <h1 class="text-3xl font-bold text-[#0A142F]">{{ $service->name }}</h1>
+            <div class="flex items-center gap-2">
+                <p class="text-yellow-400 text-lg">@for($i = 0; $i < round($averageRating); $i++) ★ @endfor</p>
+                <span class="text-gray-600 text-sm">({{ $testimonials->count() }})</span>
             </div>
-            <p class="ml-2">{{ number_format($averageRating, 1) }}/5</p>
         </div>
-    </div>
-    <div class="grid grid-cols-3 w-max gap-10 mx-14 mt-10">
-        <!-- @foreach ($service->service_galleries as $item)
-<div class="bg-white w-52 px-5 py-5 rounded-xl border">
-                <img src="{{ asset('storage/public/' . $item->image) }}" alt="img">
-            </div>
-@endforeach -->
-        @foreach ($service->service_galleries as $item)
-            <div class="bg-white w-52 px-5 py-5 rounded-xl border">
-                <img src="{{ asset('storage/' . $item->image) }}" alt="img">
-            </div>
-        @endforeach
-    </div>
-    <div class="flex items-center gap-10 justify-center my-7 benefits_ctr">
-        <div class="flex items-center gap-2">
-            <x-iconsax-bro-magic-star class="w-10 bg-[#FFC736] px-2 py-2 rounded-full" />
-            <p class="font-semibold">Garansi Layanan Terbaik</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <x-iconsax-bro-magic-star class="w-10 bg-[#FFC736] px-2 py-2 rounded-full" />
-            <p class="font-semibold">Garansi Layanan Terbaik</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <x-iconsax-bro-magic-star class="w-10 bg-[#FFC736] px-2 py-2 rounded-full" />
-            <p class="font-semibold">Garansi Layanan Terbaik</p>
-        </div>
-        <div class="flex items-center gap-2">
-            <x-iconsax-bro-magic-star class="w-10 bg-[#FFC736] px-2 py-2 rounded-full" />
-            <p class="font-semibold">Garansi Layanan Terbaik</p>
-        </div>
-    </div>
-    <div class="flex justify-center mx-14 gap-7 about_product_ctr">
-        <div class="">
-            <div>
-                <p class="text-xl font-semibold">About Product</p>
-                <div class="my-3">
-                    {!! $service->description !!}
-                </div>
-            </div>
-            <p class="font-semibold">Real Testimonials</p>
-            <div class="grid grid-cols-2 gap-3">
-                @foreach ($testimonials as $testimonial)
-                    <div class="bg-white border border-gray-400 w-56 p-3 rounded-xl">
-                        <div class="flex gap-1 mb-2">
-                            @for ($i = 1; $i <= 5; $i++)
-                                <svg class="star {{ $i <= $testimonial->rating ? 'active' : '' }}" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
-                                    </path>
-                                </svg>
-                            @endfor
-                        </div>
-                        <p>{{ $testimonial->message }}</p>
-                        <div class="flex items-center gap-3 my-2">
-                            <img src="{{ asset($testimonial->user->image) }}" alt="pp"
-                                class="w-10 h-10 rounded-full object-cover">
-                            <div>
-                                <p class="text-sm font-semibold">{{ $testimonial->user->name }}</p>
-                                <p class="text-sm">{{ $testimonial->created_at }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-            @if ($is_login === true && $is_consuming === true && !$is_already_testimonial)
-                <div class="flex items-center gap-5 my-5">
-                    <!-- <img src="{{ asset(Auth::user()->image) }}" alt="img pp" class="w-10 h-10 rounded-full object-cover"> -->
-                    @php
-                        $userImage = Auth::user()->image
-                            ? asset('storage/' . Auth::user()->image)
-                            : asset('img/user_default.png');
-                    @endphp
-                    <img src="{{ $userImage }}" alt="img pp" class="w-10 h-10 rounded-full object-cover">
 
-                    <div class="border bg-white rounded-2xl p-5 w-full">
-                        <form action="{{ route('web.store.testimonial', $service->id) }}" method="POST">
-                            @csrf
-                            <div id="rating" class="flex">
-                                @for ($i = 1; $i <= 5; $i++)
-                                    <label class="cursor-pointer">
-                                        <input type="radio" name="rating" class="hidden"
-                                            value="{{ $i }}">
-                                        <svg data-value="{{ $i }}" class="star" viewBox="0 0 20 20"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M9.049 2.927a1 1 0 011.902 0l1.286 4.287a1 1 0 00.95.691h4.506c.917 0 1.303 1.169.63 1.725l-3.641 2.833a1 1 0 00-.364 1.118l1.286 4.287c.248.826-.685 1.5-1.39 1.002l-3.641-2.833a1 1 0 00-1.176 0l-3.641 2.833c-.705.498-1.638-.176-1.39-1.002l1.286-4.287a1 1 0 00-.364-1.118L2.56 9.63c-.674-.556-.287-1.725.63-1.725h4.506a1 1 0 00.95-.691L9.049 2.927z">
-                                            </path>
-                                        </svg>
-                                    </label>
-                                @endfor
-                            </div>
-                            <textarea name="message" class="w-full mt-3 border rounded-lg px-2 py-3" placeholder="Tambahkan Komentar..." required></textarea>
-                            <button type="submit" class="bg-[#FF48B6] px-5 py-2 mt-3 text-white rounded-lg">Kirim
-                                Testimonial</button>
-                        </form>
-                    </div>
-                </div>
-            @endif
-        </div>
-        <div class="flex flex-col gap-4 bg-white rounded-2xl border border-gray-300 w-max p-5 book_now_ctr">
-            <p class="font-semibold">Book Sekarang</p>
-            <p class="font-semibold">Mulai</p>
-            <p class="font-bold text-2xl">Rp{{ number_format($service->price) }}</p>
-            <div class="flex items-center gap-3">
-                <x-fluentui-checkmark-16 class="bg-[#FF48B6] p-1 rounded-full w-6 text-white" />
-                <p class="font-semibold">Handuk Bersih dan Higienis.</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <x-fluentui-checkmark-16 class="bg-[#FF48B6] p-1 rounded-full w-6 text-white" />
-                <p class="font-semibold">Minyak aromaterapi alami.</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <x-fluentui-checkmark-16 class="bg-[#FF48B6] p-1 rounded-full w-6 text-white" />
-                <p class="font-semibold">Customer service 24/7</p>
-            </div>
-            <div class="flex items-center gap-3">
-                <x-fluentui-checkmark-16 class="bg-[#FF48B6] p-1 rounded-full w-6 text-white" />
-                <p class="font-semibold">Layanan profesional oleh terapis berpengalaman.</p>
-            </div>
-            <div class="book_btn_ctr">
-                <a href="{{ route('web.booking.page', $service->id) }}"
-                    class="w-full text-center text-white block bg-[#FF48B6] px-10 py-3 m-auto rounded-full book_btn">Booking</a>
-            </div>
-        </div>
-    </div>
-    <div>
-        <div class="text-[#10062B] flex items-center justify-between mx-14 py-5 text-xl font-bold">
-            <p>Jasa Kami</p>
-            <a href="{{ route('web.services') }}">Explore All</a>
-        </div>
-        <div class="flex gap-4 mx-14 overflow-x-auto pb-5">
-            @foreach ($services as $service)
-                <a href="{{ route('web.service', ['id' => $service->id]) }}">
-                    @php
-                        $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
-                        $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
-                    @endphp
-                    <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
-                        style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
-                        <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">
-                            {{ $service->name }}</p>
-                    </div>
-                </a>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+            @foreach ($service->service_galleries as $item)
+                <img src="{{ asset('storage/' . $item->image) }}" class="rounded-2xl px-16 py-8 bg-white border border-[#eee] w-full" alt="img">
             @endforeach
         </div>
-    </div>
+
+        <div class="flex flex-wrap gap-4 justify-between text-sm font-semibold mb-10">
+            <div class="flex items-center gap-2 rounded-full bg-white max-w-56 py-2 px-4">
+                <span class="bg-yellow-400 rounded-full p-2">⭐</span> Garansi Layanan Terbaik
+            </div>
+            <div class="flex items-center gap-2 rounded-full bg-white max-w-56 py-2 px-4">
+                <span class="bg-yellow-400 rounded-full p-2">🧴</span> Bonus Minyak Aromaterapi
+            </div>
+            <div class="flex items-center gap-2 rounded-full bg-white max-w-56 py-2 px-4">
+                <span class="bg-yellow-400 rounded-full p-2">👍</span> Dijamin 100% Profesional
+            </div>
+            <div class="flex items-center gap-2 rounded-full bg-white max-w-56 py-2 px-4">
+                <span class="bg-yellow-400 rounded-full p-2">📍</span> Tanpa Biaya Tambahan
+            </div>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10 mb-10">
+            <div class="md:col-span-2">
+                <h2 class="text-xl font-bold mb-3">About Product</h2>
+                <p class="mb-5 text-sm text-gray-700">{!! $service->description !!}</p>
+
+                <h2 class="text-lg font-bold mb-4">Real Testimonials</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    @foreach ($testimonials as $testimonial)
+                        <div class="bg-white border-2 border-[#eee] p-4 rounded-xl">
+                            <p class="text-yellow-400 mb-2">@for($i=0; $i<$testimonial->rating; $i++) ★ @endfor</p>
+                            <p class="text-sm mb-2">{{ $testimonial->message }}</p>
+                            <div class="flex items-center gap-3">
+                                <img src="{{ $testimonial->user->image ? asset('storage/' . $testimonial->user->image) : asset('img/user_default.png') }}" class="rounded-full w-10 h-10 object-cover" alt="user" />
+                                <div>
+                                    <p class="font-semibold text-sm">{{ $testimonial->user->name }}</p>
+                                    <p class="text-xs text-gray-500">{{ $testimonial->created_at->format('d M Y') }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                @if ($is_login && $is_consuming && !$is_already_testimonial)
+                    <form action="{{ route('web.store.testimonial', $service->id) }}" method="POST" class="flex items-start gap-4 bg-white rounded-xl p-4">
+                        @csrf
+                        <img src="{{ Auth::user()->image ? asset('storage/' . Auth::user()->image) : asset('img/user_default.png') }}" class="rounded-full w-10 h-10 object-cover" alt="user" />
+                        <div class="w-full">
+                            <input type="number" name="rating" min="1" max="5" required class="w-full border-2 border-[#eee] rounded-xl px-3 py-2 text-sm mb-2" placeholder="Rating (1-5)" />
+                            <textarea name="message" class="w-full border-2 border-[#eee] rounded-xl px-3 py-2 text-sm mb-2" placeholder="Tambahkan Komentar..." required></textarea>
+                            <button class="bg-pink-500 text-white py-2 px-4 rounded-full">Kirim</button>
+                        </div>
+                    </form>
+                @endif
+            </div>
+
+            <div class="bg-white border-2 border-[#eee] p-6 rounded-2xl self-start">
+                <p class="font-semibold mb-2">Book Sekarang</p>
+                <p class="text-2xl font-bold mb-4">Rp{{ number_format($service->price) }}</p>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex gap-2 text-[#0A142F] font-semibold">✅ Handuk bersih dan higienis.</li>
+                    <li class="flex gap-2 text-[#0A142F] font-semibold">✅ Minyak aromaterapi alami.</li>
+                    <li class="flex gap-2 text-[#0A142F] font-semibold">✅ Customer service 24/7</li>
+                    <li class="flex gap-2 text-[#0A142F] font-semibold">✅ Terapis profesional</li>
+                </ul>
+                <a href="{{ route('web.booking.page', $service->id) }}" class="block text-center w-full mt-5 bg-pink-500 text-white py-2 rounded-full">
+                    Booking
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-20">
+            <div class="flex justify-between items-center mb-5">
+                <h2 class="text-xl font-bold text-[#0A142F]">Jasa Kami</h2>
+                <a href="{{ route('web.services') }}" class="text-sm font-semibold text-[#0A142F]">Explore All</a>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                @foreach ($services as $srv)
+                    @php
+                        $thumb = $srv->service_galleries->firstWhere('is_thumbnail', true);
+                        $img = $thumb ? asset('storage/' . $thumb->image) : asset('img/massage.png');
+                    @endphp
+                    <a href="{{ route('web.service', $srv->id) }}">
+                        <div class="rounded-2xl p-2 w-full flex items-end justify-center aspect-square" style="background: url('{{ $img }}'); background-repeat: no-repeat; background-size: cover;">
+                            <p class="bg-white text-center py-2 rounded-full font-semibold w-full text-sm">
+                                {{ $srv->name }}
+                            </p>
+                        </div>
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </main>
+
     <x-footer></x-footer>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const ratingContainer = document.getElementById('rating');
-            const stars = ratingContainer.querySelectorAll('svg.star');
-            const inputs = ratingContainer.querySelectorAll('input[name="rating"]');
-
-            stars.forEach((star, index) => {
-                star.addEventListener('click', () => {
-                    console.log(`Bintang ke-${index + 1} diklik`);
-
-                    // Pastikan input tersedia
-                    if (inputs[index]) {
-                        inputs[index].checked = true;
-
-                        // Reset semua bintang ke abu-abu
-                        stars.forEach(s => s.classList.remove('active'));
-
-                        // Aktifkan bintang sesuai index
-                        for (let i = 0; i <= index; i++) {
-                            stars[i].classList.add('active');
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 
 </html>
