@@ -1,40 +1,94 @@
 <footer class="bg-white mt-20 px-4 py-10">
-    <div class="container mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-sm text-[#0A142F]">
-        <div>
-            <img src="{{ asset('img/logo.png') }}" alt="logo" class="mb-3 w-25" />
+    <div
+      class="container mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-sm text-[#0A142F]"
+    >
+      <div>
+        <img src="img/logo.png" alt="logo" class="mb-3 w-25" />
+      </div>
+      <div>
+        <p class="font-bold mb-2">Learn More</p>
+        <ul class="space-y-1">
+          <li><a href="#">Tentang Spa</a></li>
+          <li><a href="#">Kebijakan Privasi</a></li>
+          <li><a href="#">Lingkungan</a></li>
+          <li><a href="#">Hubungi Kami</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold mb-2">Tickets & Booking</p>
+        <ul class="space-y-1">
+          <li><a href="#">Booking Online</a></li>
+          <li><a href="#">Paket Spa</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold mb-2">Contact Us</p>
+        <ul class="space-y-1">
+          <li>
+            Spa Reservation: <span class="font-semibold">123-456-7890</span>
+          </li>
+          <li>Paket Spa: <span class="font-semibold">123-456-7890</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="font-bold mb-2">Social</p>
+        <div class="flex gap-6 text-xl">
+          <svg
+            width="9"
+            height="19"
+            viewBox="0 0 9 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.64393 18.5204V10.1485H8.19782L8.57744 6.87068H5.64393V4.78282C5.64393 3.83695 5.88223 3.18935 7.10976 3.18935H8.66519V0.266963C7.90872 0.177075 7.14763 0.134174 6.38654 0.137238C4.12914 0.137238 2.57926 1.66125 2.57926 4.45902V6.86455H0.0419922V10.1424H2.5848V18.5204H5.64393Z"
+              fill="#0A142F"
+            />
+          </svg>
+          <svg
+            width="17"
+            height="19"
+            viewBox="0 0 17 19"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M12.5328 0.137207H4.2199C1.93408 0.137207 0.0634766 2.20497 0.0634766 4.73376V13.9269C0.0634766 16.4547 1.93408 18.5234 4.2199 18.5234H12.5328C14.8186 18.5234 16.6892 16.4547 16.6892 13.9269V4.73376C16.6892 2.20497 14.8186 0.137207 12.5328 0.137207ZM8.37633 13.1606C6.46312 13.1606 4.91257 11.4452 4.91257 9.33031C4.91257 7.21452 6.46312 5.49978 8.37633 5.49978C10.2887 5.49978 11.8401 7.21452 11.8401 9.33031C11.8401 11.4452 10.2887 13.1606 8.37633 13.1606ZM11.8401 4.35064C11.8401 4.98519 12.3048 5.49978 12.8792 5.49978C13.4536 5.49978 13.9183 4.98519 13.9183 4.35064C13.9183 3.71608 13.4536 3.2015 12.8792 3.2015C12.3048 3.2015 11.8401 3.71608 11.8401 4.35064Z"
+              fill="#0A142F"
+            />
+          </svg>
+          <svg
+            width="19"
+            height="17"
+            viewBox="0 0 19 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.9908 4.24145C17.0028 4.42021 17.0028 4.59794 17.0028 4.77567C17.0028 10.2149 13.2593 16.4826 6.4178 16.4826C4.31003 16.4826 2.35189 15.8074 0.704102 14.6348C1.00336 14.6726 1.29154 14.6858 1.60281 14.6858C3.34205 14.6858 4.94273 14.0362 6.22199 12.9279C4.5862 12.8901 3.21551 11.7052 2.7426 10.075C2.97259 10.1128 3.2035 10.1383 3.44549 10.1383C3.77893 10.1383 4.11422 10.0872 4.42549 9.99838C2.71951 9.61636 1.4421 7.96057 1.4421 5.96056V5.90949C1.9381 6.21491 2.51353 6.40592 3.12314 6.43146C2.12098 5.69396 1.46427 4.43247 1.46427 3.00549C1.46427 2.24144 1.64807 1.54072 1.97043 0.929892C3.80202 3.42531 6.55542 5.05658 9.64226 5.23533C9.585 4.92889 9.5499 4.61122 9.5499 4.29253C9.5499 2.02489 11.2088 0.178101 13.2704 0.178101C14.3418 0.178101 15.3089 0.674528 15.9887 1.47739C16.8292 1.29864 17.6346 0.954407 18.3495 0.483516C18.0733 1.43858 17.485 2.24144 16.7137 2.75115C17.4628 2.66126 18.1888 2.43245 18.8557 2.11376C18.3495 2.92888 17.7168 3.65514 16.9908 4.24145Z"
+              fill="#0A142F"
+            />
+          </svg>
+          <svg
+            width="21"
+            height="17"
+            viewBox="0 0 21 17"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M18.7111 0.905785C19.5994 1.03378 20.4484 1.98915 20.5564 2.98548C20.9389 6.6369 20.9389 10.1777 20.5564 13.828C20.4484 14.8243 19.5994 15.7808 18.7111 15.9077C13.2945 16.652 7.81659 16.652 2.40149 15.9077C1.51238 15.7805 0.663404 14.8243 0.555384 13.828C0.172945 10.1774 0.172945 6.6369 0.555384 2.98548C0.663404 1.98915 1.51238 1.03349 2.40149 0.905785C7.81659 0.161451 13.2942 0.161451 18.7111 0.905785ZM8.84123 4.61494V12.1996L13.985 8.40743L8.84123 4.61494Z"
+              fill="#0A142F"
+            />
+          </svg>
         </div>
-        <div>
-            <p class="font-bold mb-2">Learn More</p>
-            <ul class="space-y-1">
-                <li><a href="#">Tentang Spa</a></li>
-                <li><a href="#">Kebijakan Privasi</a></li>
-                <li><a href="#">Lingkungan</a></li>
-                <li><a href="#">Hubungi Kami</a></li>
-            </ul>
-        </div>
-        <div>
-            <p class="font-bold mb-2">Tickets & Booking</p>
-            <ul class="space-y-1">
-                <li><a href="#">Booking Online</a></li>
-                <li><a href="#">Paket Spa</a></li>
-            </ul>
-        </div>
-        <div>
-            <p class="font-bold mb-2">Contact Us</p>
-            <ul class="space-y-1">
-                <li>Spa Reservation: <span class="font-semibold">123-456-7890</span></li>
-                <li>Paket Spa: <span class="font-semibold">123-456-7890</span></li>
-            </ul>
-        </div>
-        <div>
-            <p class="font-bold mb-2">Social</p>
-            <div class="flex gap-6 text-xl">
-                <x-iconsax-bol-instagram class="w-5" />
-                {{-- Tambahkan icon lainnya di sini jika ada --}}
-            </div>
-        </div>
+      </div>
     </div>
     <p class="text-center text-xs text-gray-400 mt-10">
-        © 2024 Pijat | All Rights Reserved
+      © 2024 Pijat | All Rights Reserved
     </p>
-</footer>
+  </footer>

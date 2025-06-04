@@ -162,9 +162,7 @@
             <img src="{{ asset('img/bg-main3.png') }}" alt="bg" class="lg:w-[40%]" />
         </div>
 
-        <div class="mx-14 mt-20">
-            <x-footer />
-        </div>
+        <x-footer />
     </main>
 
     <script>

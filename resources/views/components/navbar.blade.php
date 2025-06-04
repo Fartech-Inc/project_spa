@@ -48,10 +48,28 @@
             <div class="flex flex-col gap-3 text-[#10062B]">
                 <a href="/" class="font-normal">Home</a>
                 <a href="{{ route('web.services') }}" class="font-bold">Jasa</a>
-                <a class="bg-[#10062B] text-white rounded-full py-2 px-4 text-sm text-center" href="{{ route('user.profile.my_transactions') }}">My Booking</a>
-                <a class="border border-[#10062B] text-[#10062B] rounded-full py-2 px-4 text-sm text-center" href="{{ route('auth.login') }}">Yoga</a>
+        
+                @if (Auth::user())
+                    <a class="bg-[#10062B] text-white rounded-full py-2 px-4 text-sm text-center" href="{{ route('user.profile.my_transactions') }}">
+                        My Booking
+                    </a>
+                    <a class="border border-[#10062B] text-[#10062B] rounded-full py-2 px-4 text-sm text-center" href="{{ route('user.profile') }}">
+                        {{ Auth::user()->name }}
+                    </a>
+                    <form action="{{ route('auth.logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="border border-[#10062B] text-[#10062B] rounded-full py-2 px-4 text-sm text-center w-full">
+                            Logout
+                        </button>
+                    </form>
+                @else
+                    <a class="border border-[#10062B] text-[#10062B] rounded-full py-2 px-4 text-sm text-center" href="{{ route('auth.login') }}">
+                        Masuk
+                    </a>
+                @endif
             </div>
         </div>
+        
     </div>
 </div>
 
