@@ -139,14 +139,14 @@
                 <h2 class="text-xl font-bold text-[#0A142F]">Jasa Kami</h2>
                 <a href="{{ route('web.services') }}" class="text-sm font-semibold text-[#0A142F]">Explore All</a>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div class="flex gap-4 overflow-x-auto pb-5 card_services">
                 @foreach ($services as $srv)
                     @php
                         $thumb = $srv->service_galleries->firstWhere('is_thumbnail', true);
                         $img = $thumb ? asset('storage/' . $thumb->image) : asset('img/massage.png');
                     @endphp
                     <a href="{{ route('web.service', $srv->id) }}">
-                        <div class="rounded-2xl p-2 w-full flex items-end justify-center aspect-square" style="background: url('{{ $img }}'); background-repeat: no-repeat; background-size: cover;">
+                        <div class="rounded-2xl p-2 flex items-end justify-center w-56 aspect-square" style="background: url('{{ $img }}'); background-repeat: no-repeat; background-size: cover;">
                             <p class="bg-white text-center py-2 rounded-full font-semibold w-full text-sm">
                                 {{ $srv->name }}
                             </p>

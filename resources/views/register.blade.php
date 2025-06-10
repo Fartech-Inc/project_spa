@@ -9,8 +9,14 @@
     <title>Pijat | Register</title>
 
     <style>
-        @media (max-width: 768px) {
+        .left_side {
+            padding: 0 80px;
+        }
 
+        @media (max-width: 1024px) {
+            .left_side {
+                padding: 0 20px;
+            }
 
             .login_ctr {
                 display: block;
@@ -38,11 +44,11 @@
     <div class="flex h-screen login_ctr">
         {{-- Left Section --}}
         <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center left_side">
-            <div class="ml-20 flex items-center">
+            <div class="flex items-center">
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-4xl text-[#10062B] ml-20 my-28 text-center">Daftarkan Akun Anda</p>
+            <p class="font-bold text-4xl text-[#10062B]" style="margin: 10px 0;">Daftarkan Akun Anda</p>
             @if (session('error'))
                 <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
                     {{ session('error') }}
@@ -59,7 +65,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('auth.register.process') }}" class="mx-20 form_login">
+            <form method="POST" action="{{ route('auth.register.process') }}" class="form_login" style="margin-top: 10px;">
                 @csrf
                 <div>
                     <input type="text" placeholder="Tuliskan nama lengkap anda"

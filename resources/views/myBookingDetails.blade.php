@@ -10,7 +10,28 @@
 </head>
 
 <body class="bg-gradient-to-b from-[#EB85FF] via-[#FED1E7] via-10% to-white to-50% font-sans">
-    <x-navbar></x-navbar>
+    <x-navbar />
+
+    @if(session('success') && isset($snapToken) && isset($transaction))
+        <div id="snap-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white p-8 rounded-xl text-center shadow-lg w-[90%] max-w-md">
+                <h2 class="text-xl font-bold mb-4">Lanjutkan Pembayaran</h2>
+                <p class="mb-6">Klik tombol di bawah ini untuk membayar melalui Midtrans</p>
+                <div class="flex justify-center gap-4">
+                    <button class="bg-pink-500 text-white px-6 py-3 rounded-full font-semibold" id="pay-button">
+                        Bayar Sekarang
+                    </button>
+                    <form method="POST" action="{{ route('web.booking.cancel', $transaction->id) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-gray-300 text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-400">
+                            Cancel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endif
 
     <form action="{{  route('web.booking.process') }}" method="POST">
         @csrf
@@ -124,7 +145,7 @@
         </div>
     </form>
 
-    <x-footer></x-footer>
+    <x-footer />
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -174,6 +195,34 @@
                 $("input[name='total_price']").val(totalPrice);
             }
         });
+    </script>
+
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+    <script>
+        @if(session('success') && isset($snapToken))
+            $(document).ready(function () {
+                $('#pay-button').on('click', function () {
+                    snap.pay('{{ $snapToken }}', {
+                        onSuccess: function(result){
+                            window.location = '{{ route("web.booking.success", ["id" => $transaction->id]) }}';
+                        },
+                        onPending: function(result){
+                            console.log("Pending", result);
+                        },
+                        onError: function(result){
+                            window.location = '{{ route("web.booking.failed") }}';
+                        }
+                    });
+                });
+            });
+        @endif
+    </script>
+    <script>
+        @if(session('success') && isset($snapToken))
+            $(document).ready(function () {
+                $("#snap-modal").hide().fadeIn(300);
+            });
+        @endif
     </script>
 </body>
 

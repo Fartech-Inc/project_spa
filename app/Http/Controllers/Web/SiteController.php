@@ -250,7 +250,14 @@ class SiteController extends Controller
         // create random code for booking with format #PJT + 4 random number and alphabet (uppercase)
         $code = '#PJT' . strtoupper(substr(str_shuffle('0123456789abcdefghijklmnopqrstuvwxyz'), 0, 4));
 
-        return view("myBookingDetails", compact("service", "products", "user", "code"));
+        // Check jika session punya data SnapToken dan transaction_id
+        $snapToken = session('snapToken');
+        $transaction = null;
+        if (session('transaction_id')) {
+            $transaction = Transaction::find(session('transaction_id'));
+        }
+
+        return view("myBookingDetails", compact("service", "products", "user", "code", "snapToken", "transaction"));
     }
 
     public function booking_process(Request $request)
@@ -379,8 +386,12 @@ class SiteController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('web.payment.process', $transaction->id)
-                ->with('success', 'Booking berhasil');
+                ->route('web.booking.page', ['id' => $transaction->service_id])
+                ->with([
+                    'success' => true,
+                    'snapToken' => $transaction->token,
+                    'transaction_id' => $transaction->id,
+                ]);
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
@@ -388,6 +399,31 @@ class SiteController extends Controller
                 ->back()
                 ->with('error', 'Terjadi kesalahan saat melakukan booking')
                 ->withInput();
+        }
+    }
+
+    public function cancel($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        DB::beginTransaction();
+        try {
+            $serviceId = $transaction->service_id;
+
+            DetailTransaction::where('transaction_id', $transaction->id)->delete();
+            $transaction->delete();
+
+            DB::commit();
+
+            return redirect()->route('web.booking.page', ['id' => $serviceId])
+                ->with('success', 'Transaksi berhasil dibatalkan');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal membatalkan transaksi');
         }
     }
 

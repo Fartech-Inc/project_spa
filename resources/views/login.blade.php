@@ -24,8 +24,15 @@
         }
     </script>
     <style>
-@media (max-width: 768px) {
-    
+
+        .left_side {
+            padding: 0 80px;
+        }
+
+@media (max-width: 1024px) {
+    .left_side {
+                padding: 0 20px;
+            }
     
     .login_ctr {
         display: block;
@@ -52,11 +59,11 @@
     <div class="flex h-screen login_ctr">
         {{-- Left Section --}}
         <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center left_side">
-            <div class="ml-20 flex items-center">
+            <div class="flex items-center" style="margin-bottom: 40px;">
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Sign in to Pijat</p>
+            <p class="font-bold text-2xl text-[#10062B]" style="margin: 10px 0;">Sign in to Pijat</p>
             @if (session('success'))
                 <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
                     {{ session('success') }}
@@ -78,7 +85,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('auth.login.process') }}" method="POST" class="mx-20 form_login">
+            <form action="{{ route('auth.login.process') }}" method="POST" class="form_login" style="margin-top: 10px;">
                 @csrf
                 <div>
                     <p class="text-[#10062B]">Email Address</p>

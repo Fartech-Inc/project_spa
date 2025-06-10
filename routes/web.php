@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth:web']], function () {
     Route::get('/payment/{transaction}', [SiteController::class, 'payment_process'])->name('web.payment.process');
     Route::get('/success/{id}', [SiteController::class, 'booking_success'])->name('web.booking.success');
     Route::get('/failed', [SiteController::class, 'booking_failed'])->name('web.booking.failed');
+    Route::delete('/booking/cancel/{id}', [SiteController::class, 'cancel'])->name('web.booking.cancel');
     Route::post('/testimonial/{id}', [SiteController::class, 'store_testimonial'])->name('web.store.testimonial');
 
     // PROFILE

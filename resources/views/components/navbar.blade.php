@@ -6,9 +6,10 @@
         </a>
 
         <div class="hidden md:flex gap-5 text-[#10062B] nav_right">
-            <a href="/">Home</a>
-            <a href="{{ route('web.services') }}" class="font-bold">Jasa</a>
+            <a href="/" class="{{ request()->is('/') ? 'font-bold' : '' }}">Home</a>
+            <a href="{{ route('web.services') }}" class="{{ request()->routeIs('web.services') ? 'font-bold' : '' }}">Jasa</a>
         </div>
+
 
         <div class="hidden md:flex items-center gap-3 relative">
             @if (Auth::user())
@@ -46,8 +47,8 @@
         </button>
         <div id="mobileMenu" class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-md p-4 z-50 md:hidden">
             <div class="flex flex-col gap-3 text-[#10062B]">
-                <a href="/" class="font-normal">Home</a>
-                <a href="{{ route('web.services') }}" class="font-bold">Jasa</a>
+                <a href="/" class="{{ request()->is('/') ? 'font-bold' : '' }}">Home</a>
+                <a href="{{ route('web.services') }}" class="{{ request()->routeIs('web.services') ? 'font-bold' : '' }}">Jasa</a>
         
                 @if (Auth::user())
                     <a class="bg-[#10062B] text-white rounded-full py-2 px-4 text-sm text-center" href="{{ route('user.profile.my_transactions') }}">

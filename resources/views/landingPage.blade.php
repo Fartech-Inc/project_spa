@@ -28,13 +28,6 @@
             }
             .nav_right a { font-size: 12px; }
             .title_benefits { font-size: 12px; }
-            .card_services_home {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-direction: column;
-                gap: 10px;
-            }
         }
     </style>
 </head>
@@ -87,7 +80,7 @@
     </header>
 
     <main class="bg-white">
-        <div class="container mx-auto mt-4">
+        <div class="container mx-auto pt-10">
             <div class="text-[#10062B] flex items-center justify-between py-5 text-xl font-bold">
                 <p>Jasa Kami</p>
                 <a href="{{ route('web.services') }}">Explore All</a>
@@ -102,8 +95,13 @@
                     <a href="{{ route('web.service', ['id' => $service->id]) }}">
                         <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
                             style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
-                            <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center">
-                                {{ $service->name }}</p>
+                            <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center overflow-auto" style="overflow: hidden;
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1;
+                                        line-clamp: 1; 
+                                -webkit-box-orient: vertical;">
+                                  {{ Str::limit($service->name, 15) }}
+                            </p>
                         </div>
                     </a>
                 @endforeach

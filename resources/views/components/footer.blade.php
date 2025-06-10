@@ -2,8 +2,8 @@
     <div
       class="container mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 text-sm text-[#0A142F]"
     >
-      <div>
-        <img src="img/logo.png" alt="logo" class="mb-3 w-25" />
+      <div class="flex">
+        <img src="img/logo.png" class="aspect-auto" alt="logo" class="mb-3" style="width: 100px; height: 100px;" />
       </div>
       <div>
         <p class="font-bold mb-2">Learn More</p>

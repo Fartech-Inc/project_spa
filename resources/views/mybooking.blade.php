@@ -33,7 +33,7 @@
             </script>
         @endif
     
-        <div class="container mx-auto p-5">
+        <div class="container mx-auto mt-10">
             @foreach($transactions as $transaction)
                 <div class="bg-white shadow-lg rounded-lg p-5 mb-5 flex flex-wrap gap-4 items-center justify-between border-l-4 border-pink-400">
                     <div class="flex gap-4 items-center flex-wrap">

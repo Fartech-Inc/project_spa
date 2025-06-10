@@ -8,11 +8,11 @@
     <title>Pijat | Payment</title>
 </head>
 <body>
-    <x-navbar></x-navbar>
+    <x-navbar />
 
     <button type="submit" class="flex justify-center items-center w-50 text-center font-semibold bg-[#FF48B6] py-3 px-5 my-5 mx-20 rounded-full text-white" id="pay-button">Bayar</button>
 
-    <x-footer></x-footer>
+    <x-footer />
 
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script type="text/javascript">

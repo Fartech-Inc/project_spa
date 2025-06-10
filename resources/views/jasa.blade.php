@@ -52,7 +52,7 @@
 
     <main class="pt-40">
         <!-- Search Bar & Title -->
-        <div class="flex flex-col md:flex-row items-center justify-between md:mx-14 mx-4 gap-4 search_ctr">
+        <div class="flex flex-col md:flex-row items-center justify-between container mx-auto gap-4 search_ctr">
             <p class="text-4xl text-[#10062B] font-bold jasa_pijat_title">Jasa Pijat</p>
             <div class="relative mt-5 w-2/6 search_group">
                 <form method="GET" action="{{ route('web.services') }}">
@@ -73,15 +73,18 @@
         </div>
 
         <!-- Category Section -->
-        @foreach ($service_categories as $category)
-            <section class="bg-white rounded-3xl mx-14 mt-10 p-6 border border-[#eee]">
-                <h2 class="text-xl font-bold text-[#0A142F] mb-6">{{ $category->name }}</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 card_services">
-                    <x-card-jasa :services="$category->services" />
-                </div>
-            </section>
-        @endforeach
-    </main>
+         <div class="container mx-auto mt-10">
+
+             @foreach ($service_categories as $category)
+             <section class="bg-white rounded-3xl mt-10 p-6 border border-[#eee]">
+                 <h2 class="text-xl font-bold text-[#0A142F] mb-6">{{ $category->name }}</h2>
+                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 card_services">
+                     <x-card-jasa :services="$category->services" />
+                    </div>
+                </section>
+                @endforeach
+            </div>
+            </main>
 
     <x-footer />
 
