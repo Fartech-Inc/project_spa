@@ -23,18 +23,45 @@
                 eyeSlashIcon.style.display = 'block';
             }
         }
-    </script>
+        </script>
+        <style>
+            
+            .left_side {
+                padding: 0 80px;
+            }
+    
+            @media (max-width: 1024px) {
+                .left_side {
+                            padding: 0 20px;
+                        }
+                
+                .left_side {
+                    width: 100%;
+                    height: 100vh;
+                }
+                
+                .right_side {
+                    display: none;
+                }
+                
+                .form_login {
+                    margin-left: 10px;
+                    margin-right: 10px;
+                }
+            
+            }
+        </style>
 </head>
 
 <body>
     <div class="flex h-screen">
         {{-- Left Section --}}
-        <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center">
-            <div class="ml-20 flex items-center">
+        <div class="bg-[#F5F7FA] w-1/2 flex flex-col justify-center left_side">
+            <div class="flex items-center">
                 <img src="img/logo.png" alt="logo" class="w-24">
                 <p class="font-bold text-2xl text-[#10062B]">Pijat</p>
             </div>
-            <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">Forgot Password</p>
+            <p class="font-bold text-2xl text-[#10062B] my-28">Forgot Password</p>
             {{-- @if (session('success'))
                 <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
                     {{ session('success') }}
@@ -56,7 +83,7 @@
                     </ul>
                 </div>
             @endif --}}
-            <form action="{{ route('auth.sendOtp') }}" method="POST" class="mx-20">
+            <form action="{{ route('auth.sendOtp') }}" method="POST">
                 @csrf
                 <div>
                     <p class="text-[#10062B] mb-2">Email Address</p>
@@ -72,7 +99,7 @@
             </form>
         </div>
         {{-- Right Section --}}
-        <div class="w-1/2 bg-cover bg-center relative" style="background-image: url('img/bg-login.png');">
+        <div class="w-1/2 bg-cover bg-center relative right_side" style="background-image: url('img/bg-login.png');">
             <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-[#F6AFF2] to-transparent p-10">
                 <p class="text-2xl font-semibold text-white mb-4">Spa yang menghadirkan pengalaman relaksasi terbaik
                     dengan layanan profesional dan bahan alami berkualitas.</p>

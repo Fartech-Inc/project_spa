@@ -37,18 +37,24 @@
             </div>
             <p class="font-bold text-2xl text-[#10062B] ml-20 my-28">New Password</p>
             @if (session('success'))
+            <div class="container mx-auto">
                 <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
                     {{ session('success') }}
                 </div>
+            </div>
             @endif
 
+
             @if (session('error'))
+            <div class="container mx-auto">
                 <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
                     {{ session('error') }}
                 </div>
+            </div>
             @endif
 
             @if ($errors->any())
+            <div class="container mx-auto">
                 <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -56,6 +62,7 @@
                         @endforeach
                     </ul>
                 </div>
+            </div>
             @endif
 
             <form action="{{ route('auth.newPassword') }}" method="POST" class="mx-20">

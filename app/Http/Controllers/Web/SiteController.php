@@ -37,7 +37,7 @@ class SiteController extends Controller
             $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
 
             if ($thumbnail) {
-                $service->thumbnail_url = asset('storage/' . $thumbnail->image_path);
+                $service->thumbnail_url = asset('storage/public/' . $thumbnail->image_path);
             } else {
                 $service->thumbnail_url = asset('img/massage.png'); // path ke gambar default
             }
@@ -76,7 +76,7 @@ class SiteController extends Controller
                     ->whereNull('deleted_at')
                     ->first();
 
-                $service->image = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
+                $service->image = $thumbnail ? asset('storage/public/' . $thumbnail->image) : asset('img/massage.png');
             }
         }
 
@@ -102,7 +102,7 @@ class SiteController extends Controller
         foreach ($services as $other_service) {
             foreach ($service_galleries as $service_gallery) {
                 if ($other_service->id == $service_gallery->service_id) {
-                    $other_service->image = asset('storage/' . $service_gallery->image);
+                    $other_service->image = asset('storage/public/' . $service_gallery->image);
                 }
             }
         }
@@ -236,7 +236,7 @@ class SiteController extends Controller
             ->first();
 
         if ($service_thumbnail) {
-            $service->image = asset('storage/' . $service_thumbnail->image);
+            $service->image = asset('storage/public/' . $service_thumbnail->image);
         } else {
             $service->image = asset('img/massage.png');
         }

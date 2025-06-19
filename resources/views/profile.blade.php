@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,18 +25,19 @@
         }
     </style>
 </head>
+
 <body>
     <x-navbar></x-navbar>
-    
-    <div class="profile gap-5 min-h-screen container mx-auto">
-        <div class="bg-white rounded-lg border p-5">
-            <img id="profile-image" src="{{ $user->image ? $user->image : 'img/massage.png' }}" alt="Profile Image">
-            <form id="upload-image-form" enctype="multipart/form-data" class="mt-5">
+    <div class="profile gap-5 min-h-screen container mx-auto" style="padding-top: 140px; padding-bottom: 50px;">
+        <div class="bg-white rounded-lg border p-5 mx-auto md:mx-0">
+            <img id="profile-image" style="width: 300px;" class="aspect-square" src="{{ $user->image ? asset('storage/public/' . $user->image) : asset('img/massage.png') }}" alt="Profile Image">
+            <!-- <img id="profile-image" style="width: 300px;" class="aspect-square" src="{{ asset('img/massage.png') }}" alt="Profile Image"> -->
+            <form id="upload-image-form" enctype="multipart/form-data" class="mt-5 flex justify-center" style="padding: 5px 0 15px 0;">
                 <input type="file" id="image-input" name="image" accept="image/png, image/jpeg" class="mb-3 hidden" onchange="uploadImage()">
-                <label for="image-input" class="cursor-pointer bg-[#D70DBFCC] text-white px-10 py-3 rounded">Pilih Foto</label>
+                <label for="image-input" class="cursor-pointer bg-[#D70DBFCC] text-white px-10 py-3 rounded mx-auto">Pilih Foto</label>
             </form>
         </div>
-        <div class="font-semibold">
+        <div class="font-semibold mx-auto md:mx-0">
             <p>Biodata Diri</p>
             <p>
                 Nama :
@@ -45,8 +47,7 @@
                     id="name-input"
                     class="hidden border rounded p-1"
                     value="{{ $user->name }}"
-                    onblur="saveEdit('name')"
-                />
+                    onblur="saveEdit('name')" />
                 <span id="name-edit" class="editable-button text-[#D70DBFCC] cursor-pointer" onclick="toggleEdit('name')">Ubah</span>
             </p>
             <p>
@@ -58,8 +59,7 @@
                     class="hidden border rounded p-1"
                     value="{{ date('Y-m-d', strtotime($user->bod)) }}"
                     onfocus="setDatePickerDefaultValue('bod')"
-                    onblur="saveEdit('bod')"
-                />
+                    onblur="saveEdit('bod')" />
                 <span id="bod-edit" class="editable-button text-[#D70DBFCC] cursor-pointer" onclick="toggleEdit('bod')">Ubah</span>
             </p>
             <p class="mt-10">
@@ -70,8 +70,7 @@
                     id="email-input"
                     class="hidden border rounded p-1"
                     value="{{ $user->email }}"
-                    onblur="saveEdit('email')"
-                />
+                    onblur="saveEdit('email')" />
                 <span id="email-edit" class="editable-button text-[#D70DBFCC] cursor-pointer" onclick="toggleEdit('email')">Ubah</span>
             </p>
             <p>
@@ -82,8 +81,7 @@
                     id="phone-input"
                     class="hidden border rounded p-1"
                     value="{{ $user->phone }}"
-                    onblur="saveEdit('phone')"
-                />
+                    onblur="saveEdit('phone')" />
                 <span id="phone-edit" class="editable-button text-[#D70DBFCC] cursor-pointer" onclick="toggleEdit('phone')">Ubah</span>
             </p>
         </div>
@@ -118,7 +116,7 @@
             const file = imageInput.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     // Tampilkan gambar ke elemen img
                     document.getElementById('profile-image').src = e.target.result;
                 };
@@ -139,6 +137,7 @@
                 if (response.ok && result.success) {
                     document.getElementById('profile-image').src = result.image_url;
                     alert(result.message);
+                    location.reload();
                 } else {
                     alert(result.error || "Gagal mengunggah gambar.");
                 }
@@ -186,7 +185,10 @@
                         "Content-Type": "application/json",
                         "X-CSRF-TOKEN": "{{ csrf_token() }}",
                     },
-                    body: JSON.stringify({ key, value }),
+                    body: JSON.stringify({
+                        key,
+                        value
+                    }),
                 });
 
                 const result = await response.json();
@@ -201,7 +203,7 @@
             } catch (error) {
                 console.error("Error updating profile:", error);
                 alert("Terjadi kesalahan saat memperbarui data.");
-                inputElement.value = originalValue; 
+                inputElement.value = originalValue;
             }
 
             inputElement.classList.add('hidden');
@@ -237,7 +239,7 @@
         }
 
         // Tutup input field jika klik di luar input
-        document.addEventListener("click", function (event) {
+        document.addEventListener("click", function(event) {
             const inputs = document.querySelectorAll("input, select");
             const editButtons = document.querySelectorAll(".editable-button");
 
@@ -263,7 +265,7 @@
                         const editButton = document.getElementById(`${key}-edit`);
 
                         if (spanElement && editButton) {
-                            input.value = spanElement.textContent.trim(); 
+                            input.value = spanElement.textContent.trim();
                             input.classList.add("hidden");
                             spanElement.classList.remove("hidden");
                             editButton.classList.remove("hidden");
@@ -274,4 +276,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 // Model
 use App\Models\User;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\Storage;
 
 // Helper
 use App\Helper\InputValidationHelper;
@@ -44,25 +45,27 @@ class ProfileController extends Controller
 
             try {
                 // Hapus gambar lama jika ada
-                if ($user->image && file_exists(public_path($user->image))) {
-                    unlink(public_path($user->image));
+                if ($user->image && Storage::disk('public')->exists($user->image)) {
+                    Storage::disk('public')->delete($user->image);
                 }
 
-                // Simpan gambar baru ke folder public/uploads/user_images/
-                $filename = $user->name . '_' . $request->file('image')->getClientOriginalName() . time();
-                $path = 'uploads/user_images/' . $filename;
-                $request->file('image')->move(public_path('uploads/user_images'), $filename);
+                // Simpan gambar baru ke storage/app/public/users
+                $filename = $user->name . '_' . time() . '.' . $request->file('image')->getClientOriginalExtension();
+                $path = $request->file('image')->storeAs('users', $filename, 'public'); // simpan ke disk 'public'
 
-                $user->image = $path;
+                $user->image = $path; // Simpan path relatif, misalnya "users/namafile.jpg"
                 $user->save();
 
                 return response()->json([
                     'success' => true,
                     'message' => 'Foto profil berhasil diperbarui.',
-                    'image_url' => asset($path),
+                    'image_url' => asset('storage/' . $path), // URL akses gambar
                 ]);
             } catch (\Exception $e) {
-                return response()->json(['error' => 'Terjadi kesalahan saat mengunggah gambar.'], 500);
+                return response()->json([
+                    'error' => 'Terjadi kesalahan saat mengunggah gambar.',
+                    'message' => $e->getMessage(), // Tambahkan ini
+                ], 500);
             }
         }
 
@@ -138,7 +141,8 @@ class ProfileController extends Controller
         }
     }
 
-    public function my_transations(Request $request){
+    public function my_transations(Request $request)
+    {
         $user = Auth::user();
 
         // get all transaction where user_id = $user->id
@@ -164,7 +168,8 @@ class ProfileController extends Controller
         return view("mybooking", compact("transactions"));
     }
 
-    public function cancel_transaction(Request $request, $id){
+    public function cancel_transaction(Request $request, $id)
+    {
         try {
             $user = Auth::user();
 

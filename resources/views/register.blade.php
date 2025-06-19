@@ -50,12 +50,16 @@
             </div>
             <p class="font-bold text-4xl text-[#10062B]" style="margin: 10px 0;">Daftarkan Akun Anda</p>
             @if (session('error'))
-                <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
-                    {{ session('error') }}
+                <div class="container mx-auto">
+
+                    <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
+                        {{ session('error') }}
+                    </div>
                 </div>
             @endif
 
             @if ($errors->any())
+            <div class="container mx-auto">
                 <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -63,6 +67,7 @@
                         @endforeach
                     </ul>
                 </div>
+            </div>
             @endif
 
             <form method="POST" action="{{ route('auth.register.process') }}" class="form_login" style="margin-top: 10px;">

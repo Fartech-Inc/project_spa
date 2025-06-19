@@ -65,19 +65,19 @@
             </div>
             <p class="font-bold text-2xl text-[#10062B]" style="margin: 10px 0;">Sign in to Pijat</p>
             @if (session('success'))
-                <div class="bg-green-100 text-green-600 p-4 rounded mb-4">
+                <div class="bg-green-100 text-green-600 p-4 rounded mb-4 container mx-auto">
                     {{ session('success') }}
                 </div>
             @endif
             
             @if (session('error'))
-                <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
+                <div class="bg-red-100 text-red-600 p-4 rounded mb-4 container mx-auto">
                     {{ session('error') }}
                 </div>
             @endif
 
             @if ($errors->any())
-                <div class="bg-red-100 text-red-600 p-4 rounded mb-4">
+                <div class="bg-red-100 text-red-600 p-4 rounded mb-4 container mx-auto">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>

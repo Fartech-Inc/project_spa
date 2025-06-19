@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,19 +19,32 @@
         }
 
         @media (max-width: 1024px) {
-            .text-header { font-size: 2rem; }
-            .logo_img { width: 28px; }
+            .text-header {
+                font-size: 2rem;
+            }
+
+            .logo_img {
+                width: 28px;
+            }
+
             .pijat_logo {
                 font-family: Poppins;
                 font-weight: 800;
                 font-size: 12px;
                 line-height: 100%;
             }
-            .nav_right a { font-size: 12px; }
-            .title_benefits { font-size: 12px; }
+
+            .nav_right a {
+                font-size: 12px;
+            }
+
+            .title_benefits {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
+
 <body>
     <x-navbar />
 
@@ -88,22 +102,22 @@
 
             <div class="flex gap-4 overflow-x-auto pb-5 card_services_home">
                 @foreach ($services as $service)
-                    @php
-                        $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
-                        $imageUrl = $thumbnail ? asset('storage/' . $thumbnail->image) : asset('img/massage.png');
-                    @endphp
-                    <a href="{{ route('web.service', ['id' => $service->id]) }}">
-                        <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
-                            style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
-                            <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center overflow-auto" style="overflow: hidden;
+                @php
+                $thumbnail = $service->service_galleries->firstWhere('is_thumbnail', true);
+                $imageUrl = $thumbnail ? asset('storage/public/' . $thumbnail->image) : asset('img/massage.png');
+                @endphp
+                <a href="{{ route('web.service', ['id' => $service->id]) }}">
+                    <div class="bg-white rounded-2xl shadow-lg p-4 flex flex-col items-center w-56"
+                        style="background-image: url('{{ $imageUrl }}'); background-size: cover; background-position: center;">
+                        <p class="bg-white rounded-full py-3 px-3 mt-36 font-bold text-[#10062B] text-center overflow-auto" style="overflow: hidden;
                                 display: -webkit-box;
                                 -webkit-line-clamp: 1;
                                         line-clamp: 1; 
                                 -webkit-box-orient: vertical;">
-                                  {{ Str::limit($service->name, 15) }}
-                            </p>
-                        </div>
-                    </a>
+                            {{ Str::limit($service->name, 15) }}
+                        </p>
+                    </div>
+                </a>
                 @endforeach
             </div>
         </div>
@@ -171,4 +185,5 @@
         });
     </script>
 </body>
+
 </html>

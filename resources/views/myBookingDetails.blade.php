@@ -7,47 +7,53 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite('resources/css/app.css')
     <title>Pijat | Booking Details</title>
+    <style>
+        .additional-product:hover {
+            opacity: 0.8;
+        }
+
+        .selected-product {
+            border-color: #f38bbd !important;
+        }
+    </style>
 </head>
 
 <body class="bg-gradient-to-b from-[#EB85FF] via-[#FED1E7] via-10% to-white to-50% font-sans">
-    <x-navbar />
+    <x-navbar></x-navbar>
 
     @if(session('success') && isset($snapToken) && isset($transaction))
-        <div id="snap-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-            <div class="bg-white p-8 rounded-xl text-center shadow-lg w-[90%] max-w-md">
-                <h2 class="text-xl font-bold mb-4">Lanjutkan Pembayaran</h2>
-                <p class="mb-6">Klik tombol di bawah ini untuk membayar melalui Midtrans</p>
-                <div class="flex justify-center gap-4">
-                    <button class="bg-pink-500 text-white px-6 py-3 rounded-full font-semibold" id="pay-button">
-                        Bayar Sekarang
-                    </button>
-                    <form method="POST" action="{{ route('web.booking.cancel', $transaction->id) }}">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-gray-300 text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-400">
-                            Cancel
-                        </button>
-                    </form>
-                </div>
+    <div id="snap-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 top-0 right-0 bottom-0 left-0 flex items-center justify-center">
+        <div class="bg-white p-8 rounded-xl text-center shadow-lg w-[90%] max-w-md">
+            <h2 class="text-xl font-bold mb-4">Lanjutkan Pembayaran</h2>
+            <p class="mb-6">Klik tombol di bawah ini untuk membayar melalui Midtrans</p>
+            <div class="flex justify-center gap-4">
+                <button class="bg-pink-500 text-white px-6 py-3 rounded-full font-semibold" id="pay-button">
+                    Bayar Sekarang
+                </button>
+                <a href="{{ route('user.profile.my_transactions') }}" class="bg-gray-300 text-black px-6 py-3 rounded-full font-semibold hover:bg-gray-400">
+                    Bayar Nanti
+                </a>
             </div>
         </div>
+    </div>
     @endif
+
 
     <form action="{{  route('web.booking.process') }}" method="POST">
         @csrf
         <div class="max-w-5xl mx-auto px-4 py-40">
-            <h1 class="text-2xl font-bold mb-6">Booking #{{ $code }}</h1>
+            <h1 class="text-2xl font-bold mb-6">Booking {{ $code }}</h1>
             <input type="hidden" name="code" value="{{ $code }}">
 
             @if ($errors->any())
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
-                    <strong class="font-bold">Terjadi Kesalahan!</strong>
-                    <ul class="mt-2">
-                        @foreach ($errors->all() as $error)
-                            <li class="text-sm">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+                <strong class="font-bold">Terjadi Kesalahan!</strong>
+                <ul class="mt-2">
+                    @foreach ($errors->all() as $error)
+                    <li class="text-sm">{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
             @endif
 
             <!-- Pesanan Section -->
@@ -109,12 +115,12 @@
                 <p class="font-semibold mb-4">Tambahan Produk</p>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     @foreach ($products as $product)
-                        <button type="button" class="additional-product border-2 border-[#eee] hover:border-[#EB85FF] rounded-xl p-4 shadow text-center" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->price }}">
-                            <img src="{{ '/storage/' . $product->image }}" class="mx-auto mb-2" />
-                            <p class="font-semibold">{{ $product->name }}</p>
-                            <p class="text-gray-500 text-sm">{{ $product->product_category->name }}</p>
-                            <p class="text-blue-600 font-semibold">Rp{{ number_format($product->price) }}</p>
-                        </button>
+                    <button type="button" class="additional-product border-2 border-[#eee] rounded-xl p-4 shadow text-center" data-id="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->price }}">
+                        <img src="{{ '/storage/public/' . $product->image }}" class="mx-auto mb-2" />
+                        <p class="font-semibold">{{ $product->name }}</p>
+                        <p class="text-gray-500 text-sm">{{ $product->product_category->name }}</p>
+                        <p class="text-blue-600 font-semibold">Rp{{ number_format($product->price) }}</p>
+                    </button>
                     @endforeach
                 </div>
             </div>
@@ -145,23 +151,27 @@
         </div>
     </form>
 
-    <x-footer />
+    <x-footer></x-footer>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             let selectedProducts = [];
             let servicePrice = parseInt("{{ $service->price }}");
             let totalPrice = servicePrice;
 
-            $(".additional-product").on("click", function () {
+            $(".additional-product").on("click", function() {
                 let productId = $(this).data("id");
                 let productName = $(this).data("name");
                 let productPrice = parseInt($(this).data("price"));
                 let index = selectedProducts.findIndex(p => p.id === productId);
 
                 if (index === -1) {
-                    selectedProducts.push({ id: productId, name: productName, price: productPrice });
+                    selectedProducts.push({
+                        id: productId,
+                        name: productName,
+                        price: productPrice
+                    });
                     totalPrice += productPrice;
                     $(this).addClass("border-[#EB85FF]");
                 } else {
@@ -195,33 +205,51 @@
                 $("input[name='total_price']").val(totalPrice);
             }
         });
+
+        document.querySelectorAll('.additional-product').forEach(button => {
+            button.addEventListener('click', () => {
+                // Toggle aktif
+                button.classList.toggle('selected-product');
+
+                // (Opsional) Jika hanya boleh pilih satu:
+                // document.querySelectorAll('.additional-product').forEach(b => b.classList.remove('selected-product'));
+                // button.classList.add('selected-product');
+
+                // Ambil data (kalau perlu)
+                const id = button.dataset.id;
+                const name = button.dataset.name;
+                const price = button.dataset.price;
+
+                console.log(`Produk dipilih: ${name} - Rp${price}`);
+            });
+        });
     </script>
 
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
         @if(session('success') && isset($snapToken))
-            $(document).ready(function () {
-                $('#pay-button').on('click', function () {
-                    snap.pay('{{ $snapToken }}', {
-                        onSuccess: function(result){
-                            window.location = '{{ route("web.booking.success", ["id" => $transaction->id]) }}';
-                        },
-                        onPending: function(result){
-                            console.log("Pending", result);
-                        },
-                        onError: function(result){
-                            window.location = '{{ route("web.booking.failed") }}';
-                        }
-                    });
+        $(document).ready(function() {
+            $('#pay-button').on('click', function() {
+                snap.pay('{{ $snapToken }}', {
+                    onSuccess: function(result) {
+                        window.location = '{{ route("web.booking.success", ["id" => $transaction->id]) }}';
+                    },
+                    onPending: function(result) {
+                        console.log("Pending", result);
+                    },
+                    onError: function(result) {
+                        window.location = '{{ route("web.booking.failed") }}';
+                    }
                 });
             });
+        });
         @endif
     </script>
     <script>
         @if(session('success') && isset($snapToken))
-            $(document).ready(function () {
-                $("#snap-modal").hide().fadeIn(300);
-            });
+        $(document).ready(function() {
+            $("#snap-modal").hide().fadeIn(300);
+        });
         @endif
     </script>
 </body>
