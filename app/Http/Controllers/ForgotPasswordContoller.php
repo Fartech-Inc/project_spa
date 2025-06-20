@@ -50,6 +50,9 @@ class ForgotPasswordContoller extends Controller
                 ->subject('Your OTP Code');
         });
 
+        // Simpan email ke session
+        session(['reset_email' => $user->email]);
+
         // Redirect ke halaman OTP
         return redirect()->route('auth.forgotPassOtp')->with('success', 'OTP telah dikirim ke email Anda.');
     }
@@ -83,6 +86,37 @@ class ForgotPasswordContoller extends Controller
             return back()->with('error', 'OTP salah atau telah kadaluarsa.');
         }
     }
+
+    public function resendOtp(Request $request)
+    {
+        $email = session('reset_email');
+
+        if (!$email) {
+            return redirect()->route('auth.forgotPass')->with('error', 'Sesi tidak ditemukan. Silakan masukkan email Anda kembali.');
+        }
+
+        // Cari user berdasarkan email dari session
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return redirect()->route('auth.forgotPass')->with('error', 'User tidak ditemukan.');
+        }
+
+        // Generate OTP baru
+        $otp = mt_rand(100000, 999999);
+        $user->otp = $otp;
+        $user->otp_expiration = Carbon::now()->addMinutes(10);
+        $user->save();
+
+        // Kirim ulang OTP ke email
+        Mail::send('emails.otp', ['otp' => $otp], function ($message) use ($user) {
+            $message->to($user->email)
+                ->subject('Resend OTP Code');
+        });
+
+        return redirect()->route('auth.forgotPassOtp')->with('success', 'OTP baru telah dikirim ulang ke email Anda.');
+    }
+
 
     public function newPassword(Request $request)
     {
